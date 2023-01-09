@@ -1,0 +1,13 @@
+.infoFrom{
+    display:flex;
+    flex-direction:column;
+    gap:1rem;
+    flex:1;
+}
+ .infoFrom>div{
+    display: flex;
+    gap:1rem;
+}
+.infoInput{
+    padding:13px;
+}

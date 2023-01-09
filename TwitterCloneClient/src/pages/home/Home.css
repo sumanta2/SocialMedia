@@ -1,0 +1,27 @@
+.Home{
+    position:relative;
+    display:grid;
+    grid-template-columns: 18rem auto 20rem;
+    gap:1rem;
+}
+.mantine-Paper-root{
+    padding:0px 0.5rem;
+    padding-right:2px; 
+    background-color:"#f3f3f3";
+}
+
+@media only screen and (max-width: 1041px) {
+    .Home {
+        grid-template-columns: 18rem auto 14rem;
+    }
+}
+@media only screen and (max-width: 940px) {
+    .Home {
+        grid-template-columns: 18rem auto;
+    }
+}
+@media only screen and (max-width: 678px) {
+    .Home {
+        grid-template-columns: auto;
+    }
+}
