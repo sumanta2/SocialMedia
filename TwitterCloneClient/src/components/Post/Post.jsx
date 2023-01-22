@@ -12,6 +12,16 @@ const Post = ({data,id}) => {
   const {user}=useSelector((state)=>state.authReducer.authData)
   const [liked, setLiked] = useState(data.likes.includes(user._id))
   const [likes,setLikes]=useState(data.likes.length)
+
+  const img=["jpg", "png", "jpeg", "gif",]
+  const video=["mp4", "mov","wmv","avi",]
+
+  const ext= data?.image.split(".").pop();
+  const chkImg= img.includes(ext);
+  const chkVdo=video.includes(ext);
+
+
+
   const handleLike=()=>{
     setLiked((prev)=>!prev)
     likePost(data._id,user._id)
@@ -19,7 +29,13 @@ const Post = ({data,id}) => {
   }
   return (
     <div className="Post">
-        <img src={data?.image? process.env.REACT_APP_PUBLIC_FOLDER+data.image: ""} alt="" />
+      { chkImg ? <img src={data?.image? process.env.REACT_APP_PUBLIC_FOLDER+data.image: ""} alt="" />
+      :chkVdo?
+      <video controls  style={{"maxHeight":"400px"}}> 
+            <source src={data?.image? process.env.REACT_APP_PUBLIC_FOLDER+data.image: ""} type="video/mp4"/> </video>
+      :"Sorry can't Found this content"
+      }
+        
         <div className="postReact">
             <img src={liked? Heart:NotLike} style={{"cursor":"pointer"}} alt="" onClick={handleLike} />
             <img src={Comment} alt="" style={{"cursor":"pointer"}} />

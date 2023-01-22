@@ -5,7 +5,7 @@ import "./ProfileCard.css"
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-const ProfileCard = ({location}) => {
+const ProfileCard = ({location}) => {  
 
   const {user}=useSelector((state)=>state.authReducer.authData)
 

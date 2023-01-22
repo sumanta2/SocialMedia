@@ -9,8 +9,8 @@ const FollowersCard = () => {
     const {user}= useSelector((state)=>state.authReducer.authData)
 
     useEffect(() => {
-        const fetchPersons= async ()=>{
-            const {data}= await getAllUser();
+        const fetchPersons= async ()=>{                              
+            const {data}= await getAllUser();    
             setPersons(data)
             // console.log(data)
         }

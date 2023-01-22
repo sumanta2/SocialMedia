@@ -1,4 +1,5 @@
 import * as UserApi from "../Api/UserRequest"
+import {createChat} from "../Api/ChatRequests";
 export const updateUser= (id,formData)=>async(dispatch)=>{
     dispatch({type:"UPDATING_START"})
     try{
@@ -16,6 +17,7 @@ export const updateUser= (id,formData)=>async(dispatch)=>{
 export const followUser=(id,data)=>async(dispatch)=>{
     dispatch({type:"FOLLOW_USER"})
     UserApi.followUser(id,data)
+    createChat(id,data._id);  //id is person id and data is login user data
 }
 
 export const unFollowUser = (id,data)=> async(dispatch)=>{
