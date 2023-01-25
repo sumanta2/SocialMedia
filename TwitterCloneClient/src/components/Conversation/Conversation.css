@@ -1,0 +1,10 @@
+.deleteChat{
+    background-color: rgba(0,0,0,0.5);
+    position: absolute;
+    left:1rem;
+    z-index:5;
+    border-radius: 2px;
+    top:8px;
+    left:6px;
+    color:whitesmoke;
+}

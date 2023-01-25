@@ -16,20 +16,37 @@ import { uploadImage,uploadPost } from '../../Actions/uploadAction';
 const PostShare = ({Opened,setOpened}) => {
     const loading=useSelector((state)=>state.postReducer.uploading)
     const [image,setImage]=useState(null)
+    const [acceptFileType, setAcceptFileType] = useState({image:"null",video:null})
+    const [trackText, setTrackText] = useState("")
     const imageRef=useRef()
+    const videoRef=useRef()
     const desc=useRef()
     const matches = useMediaQuery('(min-width: 723px)');
     const matches1 = useMediaQuery('(min-width: 487px)');
+
+    const img=process.env.REACT_APP_IMAGE_EXTENSION.split("-")
+    const video=process.env.REACT_APP_VIDEO_EXTENSION.split("-")
+  
+    var acceptImg=img.map((data) => {return "."+data}).join()
+    var acceptVdo=video.map((data) => {return "."+data}).join()
     
     const dispatch=useDispatch()
     const serverPublic= process.env.REACT_APP_PUBLIC_FOLDER
     const {user}=useSelector((state)=>state.authReducer.authData)
     const onImageChange= (event)=>{
+            const {name}=event.target
             if(event.target.files && event.target.files[0])
             {
-                let img=event.target.files[0]
-                setImage(img)
+                let img1=event.target.files[0]
+                setImage(img1)
+                const ext= img1?.name.split(".").pop();
+                const chkImg= img.includes(ext);
+                const chkVdo= video.includes(ext);
+                setAcceptFileType({image:chkImg,video:chkVdo})
+                if(name !=="myImg" && chkImg) setImage(null)
+                if(name !=="myVdo" && chkVdo) setImage(null)
             }
+            
     }
     const handleClick=()=>{
         setOpened(!Opened);
@@ -44,8 +61,10 @@ const PostShare = ({Opened,setOpened}) => {
             userId:user._id,
             desc:desc.current.value,
         }
+        setTrackText("")
         if(image)
         {
+
             const data= new FormData()
             const filename=Date.now()+image.name
             data.append("name",filename)
@@ -57,14 +76,14 @@ const PostShare = ({Opened,setOpened}) => {
                 console.log(error)
             }
         }
-        dispatch(uploadPost(newPost))
+        dispatch(uploadPost(newPost))     //-----------------------------------------------------------
         reset()
     }
     return (
         <div className="PostShare">
             <img src={user.profilePicture? serverPublic+user.profilePicture:serverPublic+"defaultProfile.png"} alt="" />
             <div>
-                <input type="text" ref={desc} required name="" id="" placeholder="What's Happening" />
+                <input type="text" ref={desc} required value={trackText} onChange={(e)=>setTrackText(e.target.value)} name="" id="" placeholder="What's Happening" />
 
                 <div className="postOptions">
                     {/* setOpened(false) */}
@@ -72,17 +91,13 @@ const PostShare = ({Opened,setOpened}) => {
                         <div className="option" style={{alignSelf:"left"}} onClick={handleClick}>
                             <UilBars  />
                         </div>
-                        //previous 3 line or next 3 line
-                        // <div className="option" style={{alignSelf:"left"}} >
-                        //     <UilBars  />
-                        // </div>
                         
                     )}
                     <div className="option" style={{color:"var(--photo)"}} onClick={()=>{imageRef.current.click()}}>
                         <UilScenery />
                         {matches1?"Photo":""}
                     </div>
-                    <div className="option" style={{color:"var(--video)"}}>
+                    <div className="option" style={{color:"var(--video)"}} onClick={()=>{videoRef.current.click()}}>
                         <UilPlayCircle />
                         {matches1?"Video":""}
                     </div>
@@ -94,18 +109,25 @@ const PostShare = ({Opened,setOpened}) => {
                         <UilSchedule />
                         {matches1?"Schedule":""}
                     </div>
-                    <button className='button ps-button' disabled={loading}
+                    <button className='button ps-button' disabled={loading || ( !image && !trackText)}
                     onClick={handleSubmit}>
                         {loading? "Uploading...":"Share"}
                         </button>
                     <div style={{display:"none"}}>
-                        <input type="file" name="myImg" ref={imageRef} onChange={onImageChange}/>
+                        <input type="file" name="myImg" accept={acceptImg} ref={imageRef} onChange={onImageChange}/>
+                        <input type="file" name="myVdo" accept={acceptVdo} ref={videoRef} onChange={onImageChange}/>
                     </div>
                 </div>
                 {image && (
                     <div className="previewImage">
                         <UilTimes onClick={()=>{setImage(null)}}/>
-                        <img src={URL.createObjectURL(image)} alt="" />
+                        {  acceptFileType.image?<img src={URL.createObjectURL(image)} alt="" />:"" }
+
+                        { acceptFileType.video?
+                                <video controls  style={{maxHeight:"400px",display:"block",boxSizing:"border-box",width:"100%"}}> 
+                                    <source src={URL.createObjectURL(image)} type="video/mp4"/>
+                                </video>:""
+                        }
                     </div>
                 )}
             </div>

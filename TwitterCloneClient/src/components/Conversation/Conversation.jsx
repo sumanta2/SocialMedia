@@ -3,10 +3,15 @@
 
 import React,{useState,useEffect} from 'react'
 import {getUser} from '../../Api/UserRequest'
+import {deleteChat} from "../../Api/ChatRequests";
+import {deleteMessages} from "../../Api/MessageRequest";
+import { UilTrashAlt } from '@iconscout/react-unicons'
+import "./Conversation.css";
 
-const Conversation = ({data,currentUserId,online}) => {
+const Conversation = ({data,currentUserId,online,filterChats}) => {
 
     const [userData, setUserData] = useState(null)
+    const [hover, setHover] = useState(false);
     useEffect(() =>{
         const userId= data.members.find((id)=> id !== currentUserId)
 
@@ -21,11 +26,19 @@ const Conversation = ({data,currentUserId,online}) => {
         }
         getUserData();
     },[])
+
+    const handleClick= async(id) => {
+      filterChats(id);
+      const res= await deleteChat(id);
+      filterChats(id);
+      const data= await deleteMessages(id)
+    }
   return (
     <>
       <div className='follower conversation'>
-        <div>
+        <div  onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
           {online && <div className="online-dot"></div>}
+          {hover && <UilTrashAlt onClick={()=> handleClick(data._id)} className="deleteChat" size={33}/>}
             
             <img src={userData?.profilePicture? process.env.REACT_APP_PUBLIC_FOLDER+userData.profilePicture:process.env.REACT_APP_PUBLIC_FOLDER+"defaultProfile.png"} alt="{}" className='followerImage' style={{width:'50px',heigh:'50px'}}/>
             <div className="name" style={{fontSize:"0.8rem"}}>

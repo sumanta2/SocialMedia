@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import {useDispatch,useSelector} from "react-redux"
 import { followUser, unFollowUser } from '../../Actions/userAction'
 const User = ({person}) => {
@@ -11,8 +11,11 @@ const User = ({person}) => {
         following?
             dispatch(unFollowUser(person._id,user)):
             dispatch(followUser(person._id,user))
-        setFollowing((prev)=>!prev)
+        setFollowing((prev)=>!prev)  
     }
+    useEffect(()=>{
+        setFollowing(user.following.includes(person._id))
+    },[user.following])
     
     return (
     <div className="follower">

@@ -13,3 +13,16 @@ export const getTimelinePosts= (id)=> async(dispatch)=>{
         console.log(error)
     }
 }
+
+
+export const deletePost= (id,userId)=> async(dispatch)=>{  //"id" is the post Id which post will be deleted and "userId" means the user who currently log in
+    try {
+        dispatch({type:"DELETE_START"})
+        const message= await PostApi.deletePost(id,userId)
+        dispatch({type:"DELETE_SUCCESS",id:id})
+    } catch (error) {
+        console.log(error)
+        dispatch({type:"DELETE_FAILED"})
+
+    }
+}

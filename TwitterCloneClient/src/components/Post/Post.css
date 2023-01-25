@@ -12,6 +12,14 @@
     object-fit: cover;
     border-radius: 0.5rem;
 }
+.reactionContain{
+    display: flex;
+    justify-content: space-between;
+}
+.reactionRight{
+    display: flex;
+    gap:1rem;
+}
 .postReact{
     display:flex;
     align-items: flex-start;

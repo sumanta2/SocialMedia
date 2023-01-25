@@ -164,3 +164,33 @@
   height: 70%;
   padding: 0px 15px 0px 15px;
 }
+/* .rightIcons{
+  display: flex;
+  position:absolute;
+  width:"20rem";
+  align-self:"flex-end"
+} */
+/* @media only screen and (max-width: 630px) {
+  .rightIcons{
+    display:flex;
+    position:relative;
+    align-content: flex-end;
+    right:0px;
+    /* width:"10rem !important"; */
+    /* align-self:"flex-end"; 
+    background-color:green;
+  }
+} */
+
+@media only screen and (max-width: 500px) {
+  .Chat-container{
+    padding-left: 0px;
+    padding-right:0px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .follower{
+      padding-left: 0px;
+  }
+}

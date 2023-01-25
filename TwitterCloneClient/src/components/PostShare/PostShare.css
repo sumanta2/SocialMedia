@@ -56,6 +56,7 @@
     right:1rem;
     top:0.5rem;
     cursor:pointer;
+    z-index:55;
 }
  .previewImage>img{  /*  here i style how display image properly without croping a image in a particular position*/
     width:100%;

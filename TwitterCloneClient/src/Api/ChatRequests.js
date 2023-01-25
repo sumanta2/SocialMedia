@@ -8,3 +8,5 @@ export const createChat=(following,user)=> API.post(`/chat`,
     "senderId":user,
     "receiverId":following
   })
+
+  export const deleteChat=(id)=> API.delete(`/chat/${id}`)

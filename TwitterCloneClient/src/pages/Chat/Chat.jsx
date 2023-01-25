@@ -11,6 +11,9 @@ import "./Chat.css"
 import { Link } from 'react-router-dom'
 import ChatBox from '../../components/ChatBox/ChatBox'
 import {io} from "socket.io-client"
+import { useMediaQuery } from '@mantine/hooks';
+
+
 
 const Chat = () => {
   const {user} = useSelector((state)=> state.authReducer.authData)
@@ -19,6 +22,7 @@ const Chat = () => {
   const [onlineUsers, setOnlineUsers] = useState([])
   const [sendMessage, setSendMessage] = useState(null)
   const [receiveMessage, setReceiveMessage] = useState(null)
+  // const [messages, setMessages] = useState([])
   const socket= useRef()
 
   useEffect(()=> {
@@ -40,8 +44,8 @@ const Chat = () => {
       try {
         const {data}= await userChats(user._id)
         setChats(data);  //-------------------------------------------collect chat users data
-        console.log("data chat")
-        console.table(data);
+        // console.log("data chat")
+        // console.table(data);
       } 
       catch (error) {
         console.log(error); 
@@ -117,6 +121,16 @@ const Chat = () => {
       return online? true:false;
     }
 
+    const filterChats=(id)=>{
+        const data= chats.filter(({_id}) =>_id !== id)
+        setChats(data);
+        setCurrentChat(null)
+    }
+
+    const matches = useMediaQuery('(max-width: 630px)');
+    const maxStyle={width:"20rem",alignSelf:"flex-end"}
+    const minStyle={width:"10rem",alignSelf:"flex-end"}
+
   return (
     <div className='Chat'>
       {/* Left Side */}
@@ -127,8 +141,8 @@ const Chat = () => {
            <h2>Chat</h2>{/*--------------------------------------------------------------------------------------------------------*/}
           <div className="Chat-list">
            {chats.map((chat)=>(
-            <div key={user._id} onClick={()=> setCurrentChat(chat) }>
-              <Conversation data={chat} currentUserId={user._id} online={checkOnlineStatus(chat)} />
+            <div key={chat._id} onClick={()=> setCurrentChat(chat) }>
+              <Conversation data={chat} currentUserId={user._id} online={checkOnlineStatus(chat)} filterChats={filterChats}  />
             </div>
            ))}
           </div>
@@ -139,7 +153,7 @@ const Chat = () => {
       {/* Right side chat */}
 
       <div className="Right-side-chat">
-        <div style={{width:"20rem",alignSelf:"flex-end"}}>
+        <div className='rightIcons' style={matches?minStyle:maxStyle}>
           <div className="navIcons">
             <Link to="../home">
               <img src={Home} alt="" />
@@ -152,7 +166,7 @@ const Chat = () => {
           </div>
         </div>
         {/* Chat Body */}
-        <ChatBox chat={currentChat} currentUser={user._id} setSendMessage={setSendMessage} receiveMessage={receiveMessage} />
+        <ChatBox chat={currentChat} currentUser={user._id} setSendMessage={setSendMessage} receiveMessage={receiveMessage}/>
       </div>
     </div>
   )

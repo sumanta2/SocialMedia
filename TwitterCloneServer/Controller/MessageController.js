@@ -28,3 +28,15 @@ export const getMessages = async(req, res) => {
         res.status(500).json(error);
     }
 }
+
+//delete specific users all messages
+export const deleteMessage = async (req, res) => {
+    const {chatId} = req.params;
+
+    try {
+        const deleteCount = await MessageModel.deleteMany({chatId});
+        res.status(200).json(deleteCount);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+}

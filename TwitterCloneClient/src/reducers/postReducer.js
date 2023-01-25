@@ -15,10 +15,16 @@ const postReducer=(
                     return { ...state, posts: action.data, loading: false, error: false };
                 case "RETREIVING_FAIL":
                     return { ...state, loading: false, error: true };
+                case "DELETE_START":
+                    return { ...state, loading: true, error: false };
+                case "DELETE_SUCCESS":
+                    return { ...state, posts: state.posts.filter((post)=>post._id !==action.id), loading: false, error: false };
+                case "DELETE_FAILED":
+                    return { ...state, loading: false, error: true };
                 case "LOG_OUT":
-                     return {...state,posts:[],uploading:false,error:false}
+                    return {...state,posts:[],uploading:false,error:false}
                 default:
-                        return state
+                    return state
             }
     }
 

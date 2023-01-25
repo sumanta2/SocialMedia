@@ -1,8 +1,9 @@
 import PostModel from "../Models/postModel.js";
 import UserModel from "../Models/userModel.js"
 import mongoose from "mongoose";
+import fs from "fs";
 
-
+const path= "./public/images/";
 //Create new Post
 
 export const createPost = async (req, res) => {
@@ -52,10 +53,21 @@ export const updatePost = async (req, res) => {
 export const deletePost = async (req, res) => {
     const postId = req.params.id
     const { userId } = req.body
-
     try {
         const post = await PostModel.findById(postId)
         if (post.userId === userId) {
+            if(post.image !== undefined)
+            {
+                if (fs.existsSync(path+post.image)) 
+                {
+                    fs.unlink(path+post.image,(err)=>{
+                        if(err)
+                        {
+                            console.log("File Delete Error"+err); 
+                        }
+                    })
+                }
+            }
             await post.deleteOne()
             res.status(200).json("Post Deleted")
         }

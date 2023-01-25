@@ -25,3 +25,5 @@ router.post('/',upload.single("file"),(req,res)=>{
 export default router
 
 //1:30:18
+
+//file delete portion i implement inside the PostController deletePost section
