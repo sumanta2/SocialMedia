@@ -6,6 +6,8 @@ import Page404 from "./pages/Page404/Page404";
 import {Routes,Route,Navigate} from "react-router-dom"
 import Chat from "./pages/Chat/Chat";
 import { useSelector } from "react-redux";
+import { Toaster } from 'react-hot-toast';
+
 
 
 
@@ -24,7 +26,7 @@ function App() {
           <Route path="/chat" element={user? <Chat/> : <Navigate to="../auth"/>}/>
           <Route path="*" element={user? <Page404/> : <Navigate to="../auth"/>} />
         </Routes>
-        {/* <Auth/> */}
+        <Toaster position="bottom-center" reverseOrder={true}/>
     </div>
 
   );

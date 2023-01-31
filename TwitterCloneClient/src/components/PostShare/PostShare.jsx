@@ -1,7 +1,6 @@
 import React, {useState,useRef} from 'react'
 import "./PostShare.css"
 import { useMediaQuery } from '@mantine/hooks';
-import ProfileImage from "../../img/profileImg.jpg"
 import { UilScenery } from "@iconscout/react-unicons";
 import { UilPlayCircle } from "@iconscout/react-unicons";
 import { UilLocationPoint } from "@iconscout/react-unicons"
@@ -11,6 +10,7 @@ import { UilBars } from '@iconscout/react-unicons'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { uploadImage,uploadPost } from '../../Actions/uploadAction';
+import toast, { Toaster } from 'react-hot-toast';
 
 
 const PostShare = ({Opened,setOpened}) => {
@@ -43,8 +43,16 @@ const PostShare = ({Opened,setOpened}) => {
                 const chkImg= img.includes(ext);
                 const chkVdo= video.includes(ext);
                 setAcceptFileType({image:chkImg,video:chkVdo})
-                if(name !=="myImg" && chkImg) setImage(null)
-                if(name !=="myVdo" && chkVdo) setImage(null)
+                if(name !=="myImg" && chkImg) 
+                {
+                    toast.error('Only mp4,mov,wmv,avi format allowed', {duration: 4000});
+                    setImage(null)
+                }
+                else if(name !=="myVdo" && chkVdo)
+                { 
+                    setImage(null)
+                    toast.error('Only jpg,png,jpeg,gif format allowed', {duration: 4000});
+                 }
             }
             
     }
@@ -76,8 +84,9 @@ const PostShare = ({Opened,setOpened}) => {
                 console.log(error)
             }
         }
-        dispatch(uploadPost(newPost))     //-----------------------------------------------------------
+        dispatch(uploadPost(newPost))
         reset()
+        toast.success('Post Successfully', {duration: 3000,});
     }
     return (
         <div className="PostShare">
@@ -109,7 +118,7 @@ const PostShare = ({Opened,setOpened}) => {
                         <UilSchedule />
                         {matches1?"Schedule":""}
                     </div>
-                    <button className='button ps-button' disabled={loading || ( !image && !trackText)}
+                    <button className='button ps-button' disabled={loading || ( !image && !trackText)}   
                     onClick={handleSubmit}>
                         {loading? "Uploading...":"Share"}
                         </button>

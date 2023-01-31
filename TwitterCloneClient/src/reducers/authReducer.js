@@ -11,7 +11,6 @@ const authReducer= (state={authData : null,loading:false,error:false},action)=>{
         case "LOG_OUT":
             localStorage.clear()
             return {...state, authData:null,loading:false,error:false}
-
         case "UPDATING_START":
             return {...state,updateLoading:true,error:false}
         case "UPDATING_SUCCESS":

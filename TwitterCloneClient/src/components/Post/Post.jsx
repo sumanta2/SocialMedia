@@ -6,20 +6,30 @@ import Comment from "../../img/comment.png"
 import Share from "../../img/share.png"
 import Heart from "../../img/like.png"
 import NotLike from "../../img/notlike.png"
-import { likePost } from '../../Api/PostRequest'
 import { UilTrashAlt } from '@iconscout/react-unicons'  
-import { deletePost } from '../../Actions/postAction';
+import { deletePost,likeUnlikePost } from '../../Actions/postAction';
+import { useEffect } from 'react';
+import toast from 'react-hot-toast';
+import addLike from "../../img/animation/61914-like.json"
+import removeLike from "../../img/animation/61911-remove-like.json"
+import LottieRenderer from '../LottieRenderer/LottieRenderer';
+import Liked from "../../img/Liked.png"
+import UnLiked from "../../img/unLiked.png"
+
 
 
 const Post = ({data,id}) => {
+  const [preventRender, setPreventRender] = useState(true)
   const {user}=useSelector((state)=>state.authReducer.authData)
-  const [liked, setLiked] = useState(data.likes.includes(user._id))
-  // console.log("🚀 ~ file: Post.jsx:17 ~ Post ~ user._id", user._id)
-  // console.log("🚀 ~ file: Post.jsx:17 ~ Post ~ data.likes", data.likes)
-  // console.log("🚀 ~ file: Post.jsx:17 ~ Post ~ liked", liked)
-  const [likes,setLikes]=useState(data.likes.length)
-  //  console.log("🚀 ~ file: Post.jsx:18 ~ Post ~ data.likes", data)
+  const posts=useSelector((state)=>state.postReducer.posts)
   const dispatch=useDispatch()
+
+
+  // useEffect(()=>{
+  //   setPreventRender(true)
+  // },[])
+
+
 
 
 
@@ -32,16 +42,36 @@ const Post = ({data,id}) => {
   const chkVdo=video.includes(ext);
 
 
-  const handleDelete=(e)=>{
+  const [liked, setLiked] = useState(data.likes.includes(user._id))
+  const [likes,setLikes]=useState(data.likes.length)  //data.likes show it is empty but it show its length is 1
 
-      dispatch(deletePost(data._id,user._id))
+  const handleDelete=(e)=>{
+    toast.success('Deleted Successfully', {duration: 3000});
+    dispatch(deletePost(data._id,user._id))
   }
+
+  useEffect(()=>{
+    setLiked(data.likes.includes(user._id))    //!Warning normally when i upload any file automatically active the like icon to prevent that i use this 
+    setLikes(data.likes.length)
+  },[posts])
+  
 
   const handleLike= ()=>{
     setLiked((prev)=>!prev)
-     likePost(data._id,user._id)
-    liked? setLikes((prev)=>prev-1): setLikes((prev)=>prev+1)
+    dispatch(likeUnlikePost(data,user._id))
+    if(liked)
+    {
+       setLikes((prev)=>prev-1)
+       toast.success('UnLiked Successfully', {duration: 3000});
+
+    }
+    else{
+
+      setLikes((prev)=>prev+1)
+      toast.success('Liked Successfully', {duration: 3000});
+    }
   }
+
   return (
     <div className="Post">
       { chkImg ? <img src={data?.image? process.env.REACT_APP_PUBLIC_FOLDER+data.image: ""} alt="" />
@@ -51,8 +81,12 @@ const Post = ({data,id}) => {
       :"Sorry can't Found this content"
       }
         <div className="reactionContain">
-          <div className="postReact">
-              <img src={liked? Heart:NotLike} style={{"cursor":"pointer"}} alt="" onClick={handleLike} />
+          <div className="postReact" >
+              <div style={{"cursor":"pointer",width:"29px",height:"26px",position:"relative",top:"-29px",left:"-26px"}} alt="" onClick={handleLike} >
+                        {preventRender? (<img src={liked?Liked:UnLiked} style={{position:"relative",width:"24px",top:"30px",left:"31px"}} onClick={()=>setPreventRender(false)}/>):
+                        <LottieRenderer animationData={liked?addLike:removeLike} height={85} width={85} loop={false} autoplay={true}/>}
+                        </div>
+                      
               <img src={Comment} alt="" style={{"cursor":"pointer"}} />
               <img src={Share} alt="" style={{"cursor":"pointer"}} />
           </div>

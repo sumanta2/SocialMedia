@@ -2,16 +2,12 @@ import React, { useState,useEffect, useRef } from 'react'
 import {useSelector} from "react-redux"
 import Conversation from '../../components/Conversation/Conversation'
 import LogoSearch from "../../components/LogoSearch/LogoSearch"
-import {UilSetting} from "@iconscout/react-unicons"
-import Home from "../../img/home.png"
-import Noti from "../../img/noti.png"
-import Comment from "../../img/comment.png"
 import { userChats } from '../../Api/ChatRequests'
 import "./Chat.css"
-import { Link } from 'react-router-dom'
 import ChatBox from '../../components/ChatBox/ChatBox'
 import {io} from "socket.io-client"
 import { useMediaQuery } from '@mantine/hooks';
+import NavIcons from '../../components/NavIcons/NavIcons'
 
 
 
@@ -138,7 +134,7 @@ const Chat = () => {
         <LogoSearch/>
         <div className="Chat-container">
 
-           <h2>Chat</h2>{/*--------------------------------------------------------------------------------------------------------*/}
+           <h2>Chat</h2>
           <div className="Chat-list">
            {chats.map((chat)=>(
             <div key={chat._id} onClick={()=> setCurrentChat(chat) }>
@@ -154,16 +150,7 @@ const Chat = () => {
 
       <div className="Right-side-chat">
         <div className='rightIcons' style={matches?minStyle:maxStyle}>
-          <div className="navIcons">
-            <Link to="../home">
-              <img src={Home} alt="" />
-            </Link>
-            <UilSetting/>
-            <img src={Noti} alt="" />
-            <Link to="../chat">
-              <img src={Comment} alt="" />
-            </Link>
-          </div>
+          <NavIcons/>
         </div>
         {/* Chat Body */}
         <ChatBox chat={currentChat} currentUser={user._id} setSendMessage={setSendMessage} receiveMessage={receiveMessage}/>

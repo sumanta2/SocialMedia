@@ -3,6 +3,8 @@ import "./Page404.css"
 import image404 from "../../img/004.jpg"
 import { Link } from 'react-router-dom'
 import Home from "../../img/home.png"
+import animation404 from "../../img/animation/42752-404-error.json"
+import LottieRenderer from '../../components/LottieRenderer/LottieRenderer'
 
 
 const Page404 = () => {
@@ -22,7 +24,7 @@ const Page404 = () => {
 
 
       <div className='imageContainer'>
-          <img className='image'  src={image404} alt="not found" />
+      <LottieRenderer animationData={animation404} height={400} width={400} loop={false} autoplay={true}/>
       </div>
     </div>
   )
