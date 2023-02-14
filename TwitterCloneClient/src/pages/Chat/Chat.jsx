@@ -16,6 +16,7 @@ const Chat = () => {
   const [chats, setChats] = useState([])
   const [currentChat, setCurrentChat] = useState(null)
   const [onlineUsers, setOnlineUsers] = useState([])
+  const [typingStartUsers,setTypingStartUsers]=useState([])
   const [sendMessage, setSendMessage] = useState(null)
   const [receiveMessage, setReceiveMessage] = useState(null)
   // const [messages, setMessages] = useState([])
@@ -28,11 +29,32 @@ const Chat = () => {
       setOnlineUsers(users)
     })
     return ()=>{
+      socket.current.emit("offline", user._id);
       socket.current.close();
       socket.current.off('get-users');
       socket.current.off('new-user-add');
+      socket.current.off("offline");
     }
   },[user])
+
+
+  const handleFocus = () => {
+    const chatMember= currentChat?.members.find((member)=>member!==user._id)
+    const data={sender:user._id,receiver:chatMember}
+    socket.current.emit("typing-start", data);
+
+    return () => {
+       socket.current.off('typing-start');
+    };
+  };
+
+  // Remove Focus from searchBox
+  const handleBlur = () => {
+    socket.current.emit("typing-end", user._id);
+    return () => {
+      socket.current.off('typing-end');
+    };
+  }
 
 
   useEffect(() => {
@@ -51,41 +73,14 @@ const Chat = () => {
   },[user])
 
 
-  // useEffect(() => {
-  //   // Tab has focus
-  //   const handleFocus = async () => {
-  //     socket.current.emit("new-user-add", user._id);
-  //     socket.current.on("get-users", (users) => {
-  //       setOnlineUsers(users);
-  //     });
-  //   };
-
-  //   // Tab closed
-  //   const handleBlur = () => {
-  //     // console.log("User Obj");
-  //     // console.log(user);
-  //     if(user) {
-  //       socket.current.emit("offline",user._id);   
-  //     }
-  //   };
-
-  //   // Track if the user changes the tab to determine when they are online
-  //   window.addEventListener('focus', handleFocus);
-  //   window.addEventListener('blur', handleBlur);
-  //   // window.addEventListener("beforeunload",handleBlur);
-  //   console.log("I call switch");
-
-  //   return () => {
-  //     window.addEventListener('blur', handleBlur);
-  //     window.removeEventListener('focus', handleFocus);
-  //     // window.addEventListener('popstate', handleBlur());
-  //     // window.removeEventListener('blur', handleBlur);
-  //     // window.removeEventListener('beforeunload', handleBlur);
-  //     socket.current.off('get-users');
-  //     socket.current.off('new-user-add');
-  //     socket.current.off("offline");
-  //   }; 
-  // }, [user]);
+  useEffect(() => {
+    socket.current.on("get-typing-users", (users) => {
+      setTypingStartUsers(users);
+    });
+    return () => {
+      socket.current.off("get-typing-users");
+    }; 
+  }, [user]);
 
 
 
@@ -115,6 +110,18 @@ const Chat = () => {
       const chatMember= chat.members.find((member)=>member!==user._id)
       const online = onlineUsers.find((user)=>user.userId === chatMember);
       return online? true:false;
+    }
+
+    const checkTypingStatus=(chat)=>{
+      const chatMember= chat?.members.find((member)=>member!==user._id)
+      const typing = typingStartUsers?.find((user)=>user.userPair.sender === chatMember)
+        if(typing?.userPair.receiver===user._id)
+        {
+          return true
+        }
+        else{
+          return false
+        }
     }
 
     const filterChats=(id)=>{
@@ -153,7 +160,7 @@ const Chat = () => {
           <NavIcons/>
         </div>
         {/* Chat Body */}
-        <ChatBox chat={currentChat} currentUser={user._id} setSendMessage={setSendMessage} receiveMessage={receiveMessage}/>
+        <ChatBox chat={currentChat} currentUser={user._id} setSendMessage={setSendMessage} receiveMessage={receiveMessage} onFocus={handleFocus} onBlur={handleBlur} typing={checkTypingStatus(currentChat)}/>
       </div>
     </div>
   )

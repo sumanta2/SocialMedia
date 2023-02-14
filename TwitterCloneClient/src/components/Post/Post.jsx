@@ -4,8 +4,6 @@ import {useSelector} from 'react-redux'
 import { useDispatch } from 'react-redux';
 import Comment from "../../img/comment.png"
 import Share from "../../img/share.png"
-import Heart from "../../img/like.png"
-import NotLike from "../../img/notlike.png"
 import { UilTrashAlt } from '@iconscout/react-unicons'  
 import { deletePost,likeUnlikePost } from '../../Actions/postAction';
 import { useEffect } from 'react';
@@ -25,11 +23,6 @@ const Post = ({data,id}) => {
   const dispatch=useDispatch()
 
 
-  // useEffect(()=>{
-  //   setPreventRender(true)
-  // },[])
-
-
 
 
 
@@ -46,7 +39,7 @@ const Post = ({data,id}) => {
   const [likes,setLikes]=useState(data.likes.length)  //data.likes show it is empty but it show its length is 1
 
   const handleDelete=(e)=>{
-    toast.success('Deleted Successfully', {duration: 3000});
+    toast.success('Deleted', {duration: 3000});
     dispatch(deletePost(data._id,user._id))
   }
 
@@ -62,13 +55,24 @@ const Post = ({data,id}) => {
     if(liked)
     {
        setLikes((prev)=>prev-1)
-       toast.success('UnLiked Successfully', {duration: 3000});
+       toast.success('UnLiked', {duration: 3000});
 
     }
     else{
 
       setLikes((prev)=>prev+1)
-      toast.success('Liked Successfully', {duration: 3000});
+      toast.success('Liked', {duration: 3000});
+    }
+  }
+
+  const handleShare= async ()=>{
+    const link=process.env.REACT_APP_PUBLIC_FOLDER+data.image;
+    try {
+      await navigator.clipboard.writeText(link);
+      toast.success('Link Copied', {duration: 3000});
+    } 
+    catch (error) {
+      console.error("Failed to copy text: ", error);
     }
   }
 
@@ -85,10 +89,14 @@ const Post = ({data,id}) => {
               <div style={{"cursor":"pointer",width:"29px",height:"26px",position:"relative",top:"-29px",left:"-26px"}} alt="" onClick={handleLike} >
                         {preventRender? (<img src={liked?Liked:UnLiked} style={{position:"relative",width:"24px",top:"30px",left:"31px"}} onClick={()=>setPreventRender(false)}/>):
                         <LottieRenderer animationData={liked?addLike:removeLike} height={85} width={85} loop={false} autoplay={true}/>}
-                        </div>
+                </div>
                       
               <img src={Comment} alt="" style={{"cursor":"pointer"}} />
-              <img src={Share} alt="" style={{"cursor":"pointer"}} />
+
+              <div onClick={handleShare}>
+                <img src={Share} alt=""  style={{"cursor":"pointer"}} />
+              </div>
+
           </div>
           <div className='reactionRight'>
             {

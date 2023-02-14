@@ -13,8 +13,15 @@ const NavIcons = () => {
         <Link to="../home">
         <img src={Home} alt="" />
         </Link>
-        <UilSetting/>
-        <img src={Noti} alt="" />
+
+        <Link to="../settings">
+          <UilSetting/>
+        </Link>
+
+        <Link to="../notification">
+          <img src={Noti} alt="" />
+        </Link>
+
         <Link to="../chat">
         <img src={Comment} alt="" />
         </Link>

@@ -1,10 +1,11 @@
 import React,{useEffect} from 'react'
 import "./Posts.css"
 import { useDispatch,useSelector } from 'react-redux'
-import { PostsData } from '../../Data/PostsData'
 import Post from '../Post/Post'
 import { getTimelinePosts } from '../../Actions/postAction'
 import { useParams } from "react-router-dom";
+import animationNoPost from "../../img/animation/629-empty-box.json"
+import LottieRenderer from "../LottieRenderer/LottieRenderer"
 const Posts = ({profileSide}) => {
   const dispatch=useDispatch()
   const params = useParams()
@@ -15,8 +16,14 @@ const Posts = ({profileSide}) => {
       dispatch(getTimelinePosts(user._id))
   
      }, [])
-     if(!posts) return 'No Posts';
-    if(params.id) posts = posts.filter((post)=> post.userId===params.id)
+     if(posts.length===0) return <LottieRenderer animationData={animationNoPost} height={300} width={300} loop={false} autoplay={true}/>;
+    if(params.id)
+     {
+      posts = posts.filter((post)=> post.userId===params.id)
+      if(posts.length===0) return <LottieRenderer animationData={animationNoPost} height={300} width={300} loop={false} autoplay={true}/>;
+    
+    }
+
   return (
     
     <div className="Posts">

@@ -43,7 +43,25 @@
     padding:20px;
     flex:1;
 }
-.infoForm>div{
+.infoInputAuth{
+    border: none;
+    outline: none;
+    border-radius:8px;
+    padding:13px;
+    flex:1;
+}
+.inputColor{
+    background-color: var(--inputColor);
+}
+.inputErrorColor{
+    background-color: var(--inputError);
+}
+.error{
+    padding-left:9px;
+    font-size:9px;
+    color:red;
+}
+.infoFromDiv{
     display: flex;
     gap:1rem;
     height:2rem;
@@ -64,4 +82,11 @@
     /* width:100%; */
     align-items: center;
     justify-content: center;
+}
+
+@media screen and (max-width: 768px) {
+    .Auth{
+        flex-direction: column;
+        gap:1rem;
+    }
 }

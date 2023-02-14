@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { Formik, Form, Field,ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import "./Auth.css"
 import Logo from "../../img/logo.png"
 import { useDispatch,useSelector } from 'react-redux'
@@ -8,30 +10,37 @@ import { logIn,signUp } from '../../Actions/AuthAction'
 const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false)
   const dispatch=useDispatch()
-  const [data, setData] = useState({ firstname: "", lastname: "", password: "", confirmpass: "", username: "" })
-  const [confirmPass, setConfirmPass] = useState(true)
 
   const loading=useSelector((state)=>state.authReducer.loading)
 
-  const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value })
-  }
 
-  const handleSubmit = (e)=>{
-    e.preventDefault()
+  const handleSubmit = (values, { resetForm })=>{
+    
     if(isSignUp)
     {
-      data.password===data.confirmpass?dispatch(signUp(data)):setConfirmPass(false)
+      if(values.password===values.confirmPass)dispatch(signUp(values))
     }
     else{
-      dispatch(logIn(data))
+      dispatch(logIn(values))
     }
+    resetForm({})
   }
-  const resetForm=()=>
-  {
-    setConfirmPass(true)
-    setData({ firstname: "", lastname: "", password: "", confirmpass: "", username: "" })
+  const validationSchema= Yup.object().shape({
+    firstname:isSignUp?Yup.string().required('First name is required'):null,
+    lastname:isSignUp?Yup.string().required('Last name is required'):null,
+    username:Yup.string().required('Username is required'),
+    password:Yup.string().required('Password is required'),
+    confirmPass:isSignUp?Yup.string().oneOf([Yup.ref('password'),null],'Password must match').required('Confirm Password is required'):null
+  })
+
+  const initialValues={
+    firstname:"",
+    lastname:"",
+    username:"",
+    password:"",
+    confirmPass:"",
   }
+
   return (
     <div className="Auth">
       {/* Left side */}
@@ -44,45 +53,62 @@ const Auth = () => {
       </div>
       {/* Right Side */}
       <div className="a-right">
-        <form className="infoForm authForm" onSubmit={handleSubmit}>
-          <h3>{isSignUp ? "Sign up" : "Log In"}</h3>
-          {/* <div> */}
-          {isSignUp && (
-            <div>
-              <input className='infoInput' value={data.firstname} type="text" placeholder='First Name' name="firstname" onChange={handleChange} />
-              <input className='infoInput' value={data.lastname} type="text" placeholder='Last Name' name="lastname" onChange={handleChange} />
-            </div>
-          )
+        <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
+          {({resetForm,errors,touched}) => (
+            
+            <Form className="infoForm authForm">
+              <h3>{isSignUp ? "Sign up" : "Log In"}</h3>
+              {isSignUp && (
+                <div className='infoFromDiv'>
+                  <div>
+                    <Field className={`infoInputAuth ${touched.firstname && errors.firstname?"inputErrorColor":"inputColor"} `} type="text" placeholder='First Name' name="firstname" />
+                    <ErrorMessage name="firstname" >   
+                    {
+                      (errorMsg)=> (<div className='error' >{errorMsg}</div>  )
+                    } 
+                    </ErrorMessage>
+                  </div>
+                  <div>
+                    <Field className={`infoInputAuth ${touched.lastname && errors.lastname?"inputErrorColor":"inputColor"}`} type="text" placeholder='Last Name' name="lastname" />
+                    <ErrorMessage name='lastname' component={TextError} />   
 
-          }
+                  </div>
+                </div>
+              )}
 
-          {/* </div> */}
+              {/* </div> */}
+              <div  style={{width:"100%",}}>
+                
+                  <Field type="text" name="username" style={{width:isSignUp?"93%":"86%",}} placeholder="Usernames" className={`infoInputAuth ${touched.username && errors.username?"inputErrorColor":"inputColor"}`} />
+                  <ErrorMessage name='username'  component={TextError} />   
 
-          <div>
-            <input type="text" name="username" value={data.username} placeholder="Usernames" className="infoInput" onChange={handleChange} />
-          </div>
+              </div>
 
-          <div >
-            <input type="password" name="password" value={data.password} placeholder="Password" className="infoInput" onChange={handleChange} />
-            {
-              isSignUp && <input type="password" value={data.confirmpass} name="confirmpass" placeholder="Confirm Password" className="infoInput" onChange={handleChange} />
+              <div className='infoFromDiv'>
+                <div>
 
-            }
+                  <Field type="password" name="password" placeholder="Password" className={`infoInputAuth ${touched.password && errors.password?"inputErrorColor":"inputColor"}`} />
+                  <ErrorMessage name='password' component={TextError} />   
+                </div>
+                {
+                  isSignUp && (<div> <Field type="password" name="confirmPass" placeholder="Confirm Password" className={`infoInputAuth ${touched.confirmPass && errors.confirmPass?"inputErrorColor":"inputColor"}`} />
+                              <ErrorMessage name='confirmPass' component={TextError} />   
 
-          </div>
-          <span style={{ display: confirmPass ? "none" : "block", color: "red", fontSize: "12px", alignSelf: "flex-end", marginRight: "5px" }}> 
-            *Confirm Password is not same
-          </span>
-          <div >
-            <span style={{fontSize:"12px",margin:"auto",cursor:"pointer"}} onClick={() => { setIsSignUp((prev) => (!prev));resetForm() }}>
-              {isSignUp ? "Already have an account. Login!" : "Don't have an account? Sign Up"}
-            </span>
-          </div>
-          <button type="submit" className="button infoButton" disabled={loading}>
-            {loading?"Loading...":isSignUp ? "Signup" : "Login"}
-          </button>
-        </form>
+                              </div>)
+                }
 
+              </div>
+              <div >
+                <span style={{fontSize:"12px",margin:"auto",cursor:"pointer"}} onClick={() => { setIsSignUp((prev) => (!prev)); resetForm({})}}>
+                  {isSignUp ? "Already have an account. Login!" : "Don't have an account? Sign Up"}
+                </span>
+              </div>
+              <button type="submit" className="button infoButton" disabled={loading}>
+                {loading?"Loading...":isSignUp ? "Signup" : "Login"}
+              </button>
+            </Form>
+          )}
+        </Formik>
       </div>
 
 
@@ -90,34 +116,12 @@ const Auth = () => {
   )
 }
 
-// function SignUp() {
-//   return (
-//     <div className="a-right">
-//       <form className="infoForm authForm">
-//         <h3>Sign up</h3>
-//         <div>
-//           <input className='infoInput' type="text" placeholder='First Name' name="firstname" />
-//           <input className='infoInput' type="text" placeholder='Last Name' name="lastname" />
-//         </div>
-
-//         <div>
-//           <input type="text" name="username" placeholder="Usernames" className="infoInput" />
-//         </div>
-
-//         <div >
-//           <input type="text" name="password" placeholder="Password" className="infoInput" />
-//           <input type="text" name="Confirmpas" placeholder="Confirm Password" className="infoInput" />
-
-//         </div>
-
-//         <div >
-//           <span style={{fontSize:"12px",margin:"auto"}}>Already have an account. Login!</span>
-//         </div>
-//         <button type="submit" className="button infoButton">Signup</button>
-//       </form>
-
-//     </div>
-//   )
-// }
-
 export default Auth
+
+const TextError=({children})=>{
+  return (
+    <div className="error">
+    {children}
+    </div>
+  )
+}

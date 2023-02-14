@@ -3,11 +3,13 @@ import { getUser } from "../../Api/UserRequest";
 import { addMessage, getMessages } from "../../Api/MessageRequest";
 import {format} from "timeago.js";
 import InputEmoji from "react-input-emoji";
+import { UilCheck } from '@iconscout/react-unicons'
 
-const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage}) => {
+const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBlur,typing}) => {
   const [userData, setUserData] = useState(null);
   const [messages, setMessages] = useState([])
   const [newMessage, setNewMessage] = useState("");
+  const [reachMessage,setReachMessage]=useState(false)
   const scroll= useRef()
 
   //fetching data for header 
@@ -25,21 +27,6 @@ const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage}) => {
   }, [chat, currentUser]);
 
   useEffect(() => {
-    // console.log("Received message ChatBox1")
-    // console.log(receiveMessage)
-    // console.log("chat");
-    // console.log(chat);
-    // console.log( receiveMessage?.chatId);
-    // console.log( chat?._id);
-    // let obj1="SOrry"
-    
-    // if(receiveMessage !== null)
-    // {
-    //   obj1= Object?.keys(receiveMessage)[2]
-    //   console.log(receiveMessage[obj1]);
-    //   console.log(receiveMessage[obj1] === chat?._id);
-    // }
-
       
 
     if((receiveMessage !== null)&&(receiveMessage.chatId === chat._id)) {
@@ -124,6 +111,7 @@ const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage}) => {
                     <span>
                       {userData?.firstname} {userData?.lastname}
                     </span>
+                    {typing? <span style={{color:"blue"}}>typing...</span>:""}
                   </div>
                 </div>
               </div>
@@ -137,7 +125,7 @@ const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage}) => {
                     <div key={no} ref = {scroll}
                     className={message.senderId === currentUser? "message own" :"message"}>
                       <span>{message.text}</span>
-                      <span>{format(message.createdAt)}</span>
+                      <div style={{display:"flex"}}><span>{format(message.createdAt)}</span>{message.senderId === currentUser && reachMessage? <UilCheck/>:""}</div>
                     </div>
                 ))
               }
@@ -149,7 +137,7 @@ const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage}) => {
                 <button className="button" disabled={true}>+</button>
               </div>
               {/* <button>+</button> */}
-              <InputEmoji value={newMessage} onChange={handleChange}/>
+              <InputEmoji value={newMessage} onChange={handleChange} onBlur={()=>{onBlur()}} onFocus={()=>{onFocus()}}/>
               <button className="send-button button" disabled={!newMessage} onClick={handleSend}>Send</button>
             </div>
           </>

@@ -8,6 +8,7 @@
   --cardColor: rgba(255, 255, 255, 0.64);
   --buttonBg: linear-gradient(98.63deg, #f9a225 0%, #f95f35 100%);
   --inputColor: rgba(40, 52, 62, 0.07);
+  --inputError:rgba(230, 0, 0, 0.20);
   --photo: #4CB256;
   --video: #4A4EB7;
   --location: #EF5757;

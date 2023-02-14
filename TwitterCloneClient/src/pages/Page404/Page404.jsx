@@ -1,13 +1,13 @@
 import React from 'react'
 import "./Page404.css"
-import image404 from "../../img/004.jpg"
 import { Link } from 'react-router-dom'
 import Home from "../../img/home.png"
-import animation404 from "../../img/animation/42752-404-error.json"
+import animation404 from "../../img/animation/98642-error-404.json"
 import LottieRenderer from '../../components/LottieRenderer/LottieRenderer'
 
 
 const Page404 = () => {
+
   return (
     <div className="parentDiv">
       <div>

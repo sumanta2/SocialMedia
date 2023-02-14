@@ -111,10 +111,16 @@
   gap:0.5rem;
 }
 
-.message>span:nth-child(2){
+.message>div>span:nth-child(1){
   font-size: 0.7rem;
   color:var(--textColor);
   align-self: end;
+}
+.message>div>svg{
+  fill: cyan;
+  height: 20px;
+  bottom: -4px;
+  position: relative;
 }
 
 .own{

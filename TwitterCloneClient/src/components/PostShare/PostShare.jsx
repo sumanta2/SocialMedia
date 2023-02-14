@@ -86,7 +86,7 @@ const PostShare = ({Opened,setOpened}) => {
         }
         dispatch(uploadPost(newPost))
         reset()
-        toast.success('Post Successfully', {duration: 3000,});
+        toast.success('Posted', {duration: 3000,});
     }
     return (
         <div className="PostShare">
