@@ -1,19 +1,49 @@
 import PostModel from "../Models/postModel.js";
 import UserModel from "../Models/userModel.js"
+import HashTagModel from "../Models/hashtagModel.js";
 import mongoose from "mongoose";
 import fs from "fs";
 
 const path= "./public/images/";
+
 //Create new Post
 
 export const createPost = async (req, res) => {
+    const hashtags = fetchHashTags(req.body.desc) //populates if there are any hastags in the post
+    req.body.hashtags = hashtags
+
     const newPost = new PostModel(req.body)
     try {
+
         await newPost.save()
+
+        for (let hashtag in hashtag){
+            await HashTagModel.find({_id: hashtag}, function (err, docs){
+                if (docs.length){
+                    HashTagModel.updateOne(docs, {_id: hashtag, count: docs.count+1 })
+                }else{
+                    new HashTagModel({_id: hashtag, count: 1}).save()
+                }
+            })
+        }
+
         res.status(200).json(newPost)
     } catch (error) {
         res.status(500).json(error)
     }
+}
+
+// process the hashtag 
+
+const fetchHashTags = (message) => {
+    const hashtagsArr = message.match(/#([a-z0-9]+)/g).map(e => e.slice(1))
+    return hashtagsArr ? hashtagsArr : []
+}
+
+
+//update or store the hashtag in the database
+const updateHashTags = (hashtag) => {
+
 }
 
 //Get a Post 
