@@ -4,6 +4,9 @@ const postSchema= mongoose.Schema({
     desc:String,
     likes:[],
     image:String,
+    hashtags:[],
+
+    
 },{
     timestamps:true
 });
