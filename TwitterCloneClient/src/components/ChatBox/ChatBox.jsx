@@ -5,7 +5,7 @@ import {format} from "timeago.js";
 import InputEmoji from "react-input-emoji";
 import { UilCheck } from '@iconscout/react-unicons'
 
-const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBlur,typing}) => {
+const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBlur,typing,online}) => {
   const [userData, setUserData] = useState(null);
   const [messages, setMessages] = useState([])
   const [newMessage, setNewMessage] = useState("");
@@ -110,8 +110,10 @@ const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBl
                   <div className="name" style={{ fontSize: "0.8rem" }}>
                     <span>
                       {userData?.firstname} {userData?.lastname}
-                    </span>
-                    {typing? <span style={{color:"blue"}}>typing...</span>:""}
+                      </span>
+                      <span style={{color:"blue"}}>
+                        {typing ?"typing...": online === "true" ? "Online" : "Last Seen " + online}
+                      </span>
                   </div>
                 </div>
               </div>

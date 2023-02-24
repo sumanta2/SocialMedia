@@ -24,7 +24,7 @@ const Chat = () => {
 
   useEffect(()=> {
     socket.current=io(process.env.SOCKET_IO_SERVER || "http://localhost:8800")
-    socket.current.emit("new-user-add",user._id)
+    socket.current.emit("new-user-add",user._id, new Date().toLocaleString())
     socket.current.on('get-users',(users) =>{
       setOnlineUsers(users)
     })
@@ -106,10 +106,10 @@ const Chat = () => {
       }
     },[])
 
-    const checkOnlineStatus= (chat)=>{
-      const chatMember= chat.members.find((member)=>member!==user._id)
-      const online = onlineUsers.find((user)=>user.userId === chatMember);
-      return online? true:false;
+    const checkOnlineStatus= (chat)=>{//--------------------------------------------
+      const chatMember = chat.members.find((member) => member !== user._id)
+      const onlineCheck = onlineUsers.find((user) => user.userId === chatMember);
+      return onlineCheck?.online==="true"? "true":onlineCheck?.lastSeen;
     }
 
     const checkTypingStatus=(chat)=>{
@@ -160,7 +160,7 @@ const Chat = () => {
           <NavIcons/>
         </div>
         {/* Chat Body */}
-        <ChatBox chat={currentChat} currentUser={user._id} setSendMessage={setSendMessage} receiveMessage={receiveMessage} onFocus={handleFocus} onBlur={handleBlur} typing={checkTypingStatus(currentChat)}/>
+        <ChatBox chat={currentChat} currentUser={user._id} setSendMessage={setSendMessage} receiveMessage={receiveMessage} onFocus={handleFocus} onBlur={handleBlur} typing={checkTypingStatus(currentChat)} online={currentChat?checkOnlineStatus(currentChat):""} />
       </div>
     </div>
   )

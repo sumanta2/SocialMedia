@@ -37,13 +37,13 @@ const Conversation = ({data,currentUserId,online,filterChats}) => {
     <>
       <div className='follower conversation'>
         <div  onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
-          {online && <div className="online-dot"></div>}
+          {online=== "true" && <div className="online-dot"></div>}
           {hover && <UilTrashAlt onClick={()=> handleClick(data._id)} className="deleteChat" size={33}/>}
             
             <img src={userData?.profilePicture? process.env.REACT_APP_PUBLIC_FOLDER+userData.profilePicture:process.env.REACT_APP_PUBLIC_FOLDER+"defaultProfile.png"} alt="{}" className='followerImage' style={{width:'50px',heigh:'50px'}}/>
             <div className="name" style={{fontSize:"0.8rem"}}>
               <span>{userData?.firstname} {userData?.lastname}</span>
-              <span>{online? "Online":"Offline"}</span>
+              <span>{online==="true" ? "Online": "Offline"}</span>
 
             </div>
         </div>
