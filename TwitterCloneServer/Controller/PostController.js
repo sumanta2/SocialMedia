@@ -36,7 +36,7 @@ export const createPost = async (req, res) => {
 // process the hashtag 
 
 const fetchHashTags = (message) => {
-    const hashtagsArr = message.match(/#([a-z0-9]+)/g).map(e => e.slice(1))
+    const hashtagsArr = message.match(/#([a-z0-9]+)/g)?.map(e => e.slice(1))
     return hashtagsArr ? hashtagsArr : []
 }
 
