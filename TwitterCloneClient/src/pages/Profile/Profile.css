@@ -12,17 +12,17 @@
     gap: 1rem;  
 }
 
-@media only screen and (max-width: 1041px) {
+@media only screen and (max-width: 1056px) {
     .Profile {
         grid-template-columns: 18rem auto 14rem;
     }
 }
-@media only screen and (max-width: 940px) {
+@media only screen and (max-width: 962px) {
     .Profile {
         grid-template-columns: 18rem auto;
     }
 }
-@media only screen and (max-width: 730px) {
+@media only screen and (max-width: 723px) {
     .Profile {
         grid-template-columns: auto;
     }

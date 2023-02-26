@@ -87,7 +87,7 @@ const Post = ({data,id}) => {
         <div className="reactionContain">
           <div className="postReact" >
               <div style={{"cursor":"pointer",width:"29px",height:"26px",position:"relative",top:"-29px",left:"-26px"}} alt="" onClick={handleLike} >
-                        {preventRender? (<img src={liked?Liked:UnLiked} style={{position:"relative",width:"24px",top:"30px",left:"31px"}} onClick={()=>setPreventRender(false)}/>):
+                        {preventRender? (<img src={liked?Liked:UnLiked} alt="" style={{position:"relative",width:"24px",top:"30px",left:"31px"}} onClick={()=>setPreventRender(false)}/>):
                         <LottieRenderer animationData={liked?addLike:removeLike} height={85} width={85} loop={false} autoplay={true}/>}
                 </div>
                       

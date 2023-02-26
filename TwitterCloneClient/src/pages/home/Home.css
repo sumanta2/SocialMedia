@@ -15,12 +15,12 @@
         grid-template-columns: 18rem auto 14rem;
     }
 }
-@media only screen and (max-width: 940px) {
+@media only screen and (max-width: 950px) {
     .Home {
         grid-template-columns: 18rem auto;
     }
 }
-@media only screen and (max-width: 678px) {
+@media only screen and (max-width: 723px) {
     .Home {
         grid-template-columns: auto;
     }

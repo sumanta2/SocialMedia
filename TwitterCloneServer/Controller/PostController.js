@@ -17,15 +17,15 @@ export const createPost = async (req, res) => {
 
         await newPost.save()
 
-        for (let hashtag in hashtag){
-            await HashTagModel.find({_id: hashtag}, function (err, docs){
-                if (docs.length){
-                    HashTagModel.updateOne(docs, {_id: hashtag, count: docs.count+1 })
-                }else{
-                    new HashTagModel({_id: hashtag, count: 1}).save()
-                }
-            })
-        }
+        // for (let hashtag in hashtag){
+        //     await HashTagModel.find({_id: hashtag}, function (err, docs){
+        //         if (docs.length){
+        //             HashTagModel.updateOne(docs, {_id: hashtag, count: docs.count+1 })
+        //         }else{
+        //             new HashTagModel({_id: hashtag, count: 1}).save()
+        //         }
+        //     })
+        // }
 
         res.status(200).json(newPost)
     } catch (error) {

@@ -29,9 +29,9 @@ const Conversation = ({data,currentUserId,online,filterChats}) => {
 
     const handleClick= async(id) => {
       filterChats(id);
-      const res= await deleteChat(id);
+      await deleteChat(id);
       filterChats(id);
-      const data= await deleteMessages(id)
+      await deleteMessages(id)
     }
   return (
     <>

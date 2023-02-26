@@ -4,13 +4,12 @@ import { useMediaQuery } from '@mantine/hooks';
 import { UilScenery } from "@iconscout/react-unicons";
 import { UilPlayCircle } from "@iconscout/react-unicons";
 import { UilLocationPoint } from "@iconscout/react-unicons"
-import { UilSchedule } from "@iconscout/react-unicons"
 import { UilTimes } from "@iconscout/react-unicons"
 import { UilBars } from '@iconscout/react-unicons'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { uploadImage,uploadPost } from '../../Actions/uploadAction';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 
 const PostShare = ({Opened,setOpened}) => {
@@ -114,10 +113,10 @@ const PostShare = ({Opened,setOpened}) => {
                         <UilLocationPoint />
                         {matches1?"Location":""}
                     </div>
-                    <div className="option" style={{color:"var(--shedule)"}}>
+                    {/* <div className="option" style={{color:"var(--shedule)"}}>
                         <UilSchedule />
                         {matches1?"Schedule":""}
-                    </div>
+                    </div> */}
                     <button className='button ps-button' disabled={loading || ( !image && !trackText)}   
                     onClick={handleSubmit}>
                         {loading? "Uploading...":"Share"}

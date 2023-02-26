@@ -11,7 +11,7 @@ import "./Profile.css"
 
 const Profile = () => {
   const matches = useMediaQuery('(min-width: 723px)');
-  const matches1 = useMediaQuery('(min-width: 942px)');
+  const matches1 = useMediaQuery('(min-width: 962px)');
 
   const [CheckOpened, setCheckOpened] = useState(false)
 

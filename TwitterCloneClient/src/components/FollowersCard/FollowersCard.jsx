@@ -1,7 +1,6 @@
 import React,{useEffect,useState} from 'react'
 import { useSelector } from 'react-redux'
 import { getAllUser } from '../../Api/UserRequest'
-import { Followers } from '../../Data/FollowersData'
 import User from '../User/User'
 import "./FollowersCard.css"
 const FollowersCard = () => {

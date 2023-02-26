@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { getUser } from "../../Api/UserRequest";
 import { addMessage, getMessages } from "../../Api/MessageRequest";
-import {format} from "timeago.js";
+import moment from 'moment';
 import InputEmoji from "react-input-emoji";
-import { UilCheck } from '@iconscout/react-unicons'
+// import { UilCheck } from '@iconscout/react-unicons'
 
 const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBlur,typing,online}) => {
   const [userData, setUserData] = useState(null);
   const [messages, setMessages] = useState([])
   const [newMessage, setNewMessage] = useState("");
-  const [reachMessage,setReachMessage]=useState(false)
+  // const [reachMessage,setReachMessage]=useState(false)
   const scroll= useRef()
 
   //fetching data for header 
@@ -127,12 +127,12 @@ const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBl
                     <div key={no} ref = {scroll}
                     className={message.senderId === currentUser? "message own" :"message"}>
                       <span>{message.text}</span>
-                      <div style={{display:"flex"}}><span>{format(message.createdAt)}</span>{message.senderId === currentUser && reachMessage? <UilCheck/>:""}</div>
+                      <div style={{display:"flex"}}><span>{moment(message.createdAt).fromNow()}</span></div>  
                     </div>
                 ))
               }
             </div>
-
+            {/* {message.senderId === currentUser && reachMessage? <UilCheck/>:""}   logic for send confirm message */}
             {/* Chat Sender */}
             <div className="chat-sender">
               <div>
