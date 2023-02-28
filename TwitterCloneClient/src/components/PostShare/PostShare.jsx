@@ -102,19 +102,19 @@ const PostShare = ({Opened,setOpened}) => {
                         
                     )}
                     <div className="option" style={{color:"var(--photo)"}} onClick={()=>{imageRef.current.click()}}>
-                        <UilScenery />
+                        <UilScenery style={{transform: "rotate(12deg)"}} />
                         {matches1?"Photo":""}
                     </div>
                     <div className="option" style={{color:"var(--video)"}} onClick={()=>{videoRef.current.click()}}>
-                        <UilPlayCircle />
+                        <UilPlayCircle style={{transform: "rotate(10deg)"}} />
                         {matches1?"Video":""}
                     </div>
                     <div className="option" style={{color:"var(--location)"}}>
-                        <UilLocationPoint />
+                        <UilLocationPoint  style={{transform: "rotate(342deg)"}}/>
                         {matches1?"Location":""}
                     </div>
                     {/* <div className="option" style={{color:"var(--shedule)"}}>
-                        <UilSchedule />
+                        <UilSchedule style={{transform: "rotate(15deg)"}}/>
                         {matches1?"Schedule":""}
                     </div> */}
                     <button className='button ps-button' disabled={loading || ( !image && !trackText)}   

@@ -1,5 +1,5 @@
 .navIcons{
-    margin-top: 1rem;
+    /* margin-top: 1rem; */
     display: flex;
     justify-content: space-between;
 }
@@ -7,15 +7,19 @@
     width:1.5rem;
     height:1.5rem;
 }
-.navIcons>a>img{
+/* .navIcons>a>img{
     width:1.5rem;
     height:1.5rem;
-}
+} */
 
 a:active svg {
     fill: rgba(0,0,0,0.8);
   }
 a svg{
     fill:rgba(0,0,0,0.8);
+}
+.chatClass>div>div>svg{
+    top:-21px;
+    position:relative;
 }
   

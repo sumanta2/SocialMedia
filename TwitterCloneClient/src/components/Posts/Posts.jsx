@@ -16,11 +16,11 @@ const Posts = ({profileSide}) => {
       dispatch(getTimelinePosts(user._id))
   
      }, [])
-     if(posts.length===0) return <LottieRenderer animationData={animationNoPost} height={300} width={300} loop={false} autoplay={true}/>;
+     if(posts.length===0) return <div style={{margin:"0px auto"}}><LottieRenderer animationData={animationNoPost} height={300} width={300} loop={false} autoplay={true}/></div>;
     if(params.id)
      {
       posts = posts.filter((post)=> post.userId===params.id)
-      if(posts.length===0) return <LottieRenderer animationData={animationNoPost} height={300} width={300} loop={false} autoplay={true}/>;
+      if(posts.length===0) return <div style={{margin:"0px auto"}}><LottieRenderer animationData={animationNoPost} height={300} width={300} loop={false} autoplay={true}/></div>;
     
     }
 
