@@ -15,7 +15,7 @@ const User = ({person}) => {
     }
     useEffect(()=>{
         setFollowing(user.following.includes(person._id))
-    },[user.following])
+    },[user.following,person._id])
     
     return (
     <div className="follower">

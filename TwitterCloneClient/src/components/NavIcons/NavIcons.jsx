@@ -1,8 +1,8 @@
 import React from 'react'
-import Home from "../../img/home.png"
-import Noti from "../../img/noti.png"
-import Comment from "../../img/comment.png"
-import {UilSetting} from "@iconscout/react-unicons"
+// import Home from "../../img/home.png"
+// import Noti from "../../img/noti.png"
+// import Comment from "../../img/comment.png"
+// import {UilSetting} from "@iconscout/react-unicons"
 import "./NavIcons.css"
 import { Link , useLocation } from 'react-router-dom'
 import LottieRenderer from '../LottieRenderer/LottieRenderer';

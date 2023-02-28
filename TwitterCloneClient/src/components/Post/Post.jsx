@@ -46,7 +46,7 @@ const Post = ({data,id}) => {
   useEffect(()=>{
     setLiked(data.likes.includes(user._id))    //!Warning normally when i upload any file automatically active the like icon to prevent that i use this 
     setLikes(data.likes.length)
-  },[posts])
+  },[posts,data.likes,user._id])
   
 
   const handleLike= ()=>{

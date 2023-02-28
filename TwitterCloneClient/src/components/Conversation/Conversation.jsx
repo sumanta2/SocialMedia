@@ -25,7 +25,7 @@ const Conversation = ({data,currentUserId,online,filterChats}) => {
           }            
         }
         getUserData();
-    },[])
+    },[currentUserId,data.members])
 
     const handleClick= async(id) => {
       filterChats(id);

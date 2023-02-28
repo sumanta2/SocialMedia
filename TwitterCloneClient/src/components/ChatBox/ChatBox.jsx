@@ -37,7 +37,7 @@ const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBl
     } 
 
 
-  }, [receiveMessage])
+  }, [receiveMessage,chat._id,messages])
   
 
   //fetching data for messages
