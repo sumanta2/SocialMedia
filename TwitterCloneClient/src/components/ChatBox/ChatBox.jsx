@@ -1,11 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef} from "react";
 import { getUser } from "../../Api/UserRequest";
-import { addMessage, getMessages } from "../../Api/MessageRequest";
+import { addMessage, getMessages,deleteOneMessage } from "../../Api/MessageRequest";
 import moment from 'moment';
 import InputEmoji from "react-input-emoji";
+import toast from 'react-hot-toast';
+import { Menu } from '@mantine/core';
+import { UilTrashAlt } from '@iconscout/react-unicons'
+import { UilClipboardNotes } from '@iconscout/react-unicons'
 // import { UilCheck } from '@iconscout/react-unicons'
 
-const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBlur,typing,online}) => {
+const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBlur,typing,online,socketRef,recipient}) => {
   const [userData, setUserData] = useState(null);
   const [messages, setMessages] = useState([])
   const [newMessage, setNewMessage] = useState("");
@@ -29,7 +33,7 @@ const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBl
   useEffect(() => {
       
 
-    if((receiveMessage !== null)&&(receiveMessage.chatId === chat._id)) {
+    if((receiveMessage !== null)&&(receiveMessage.chatId === chat?._id)) {
 
       setMessages([...messages,receiveMessage])
       // console.log("Received message ChatBox2")
@@ -37,7 +41,7 @@ const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBl
     } 
 
 
-  }, [receiveMessage,chat._id,messages])
+  }, [receiveMessage,chat?._id])   //here can not pass "messages" as a dependency if pass it create error in infinite loop
   
 
   //fetching data for messages
@@ -69,22 +73,55 @@ const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBl
 
     //send message to database
     try {
-      const {data}= await addMessage(message);
+      const { data } = await addMessage(message);
       setMessages([...messages,data])
       setNewMessage("")
+      setSendMessage(data);
+
     } catch (error) {
         console.log(error);
     }
-
-    const receiverId=chat.members.find((id) => id !== currentUser);
-    setSendMessage({...message,receiverId});
   }
 
 
   //always scroll to the last message
   useEffect(() =>{
     scroll.current?.scrollIntoView({behavior:"auto"});  //in place of auto if provided smooth it smoothly scroll beginning to end
-  },[messages])
+  }, [messages])
+  
+  useEffect(() => {
+    socketRef.current?.on("delete-message-id", (id) => {
+      const value = messages.filter((message) => message._id !== id)
+      setMessages(value)
+      toast.success('One Message deleted By user', { duration: 3000 });
+    })
+    return () => {
+        socketRef.current?.off("delete-message-id")
+    };
+  }, [messages])  //if i does not put messages in the dependency list when delete message by sender in reliever end data does not delete in real time(sometime)
+  const deleteMessage = async (id) => {
+    
+    try {
+      await deleteOneMessage(id)
+      const value = messages.filter((message) => message._id !== id)
+      setMessages(value)
+      socketRef.current.emit('delete-message', id,recipient);
+    } catch (error) {
+      console.log(error)
+    }
+    return () => {
+      socketRef.current.off("delete-message");
+    }
+  }
+  const copyToClipboard = async (data) => {
+    try {
+      await navigator.clipboard.writeText(data);
+      toast.success('Text Copied', { duration: 3000 });
+    }
+    catch (error) {
+      console.error("Failed to copy text: ", error);
+    }
+  }
 
   return (
     <>
@@ -123,13 +160,21 @@ const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBl
             {/* Chat Box Messages */}
             <div className="chat-body">
               {
-                messages.map((message,no)=> (
-                    <div key={no} ref = {scroll}
-                    className={message.senderId === currentUser? "message own" :"message"}>
-                      <span>{message.text}</span>
-                      <div style={{display:"flex"}}><span>{moment(message.createdAt).fromNow()}</span></div>  
-                    </div>
-                ))
+                  messages.map((message, no) => (
+                    
+                    <Menu key={no} ref={scroll} control={
+                      // <div className="">
+                      <div className={message.senderId === currentUser ? " message own" : "message"}>
+                        <span>{message.text}</span>
+                        <div style={{ display: "flex" }}><span>{moment(message.createdAt).fromNow()}</span></div>
+                      </div>
+                    } style={message.senderId === currentUser ? { alignSelf: "flex-end" } : {}}>
+                      {message.senderId === currentUser ? <Menu.Item icon={<UilTrashAlt color="#FF0000" />} onClick={()=>deleteMessage(message._id)}>Delete Message</Menu.Item> : ""}
+                      <Menu.Item icon={<UilClipboardNotes />} onClick={() => copyToClipboard(message.text)}>Clipboard</Menu.Item>
+                    </Menu>
+
+
+                  ))
               }
             </div>
             {/* {message.senderId === currentUser && reachMessage? <UilCheck/>:""}   logic for send confirm message */}

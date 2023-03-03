@@ -90,7 +90,8 @@ const Chat = () => {
     {
       // console.log("send Message");
       // console.log(sendMessage);
-      socket.current.emit('send-message', sendMessage);
+      const recipient=currentChat?.members.find((member)=>member !== user._id)
+      socket.current.emit('send-message', sendMessage,recipient);
     }
   }, [sendMessage])
   
@@ -128,8 +129,8 @@ const Chat = () => {
         const data= chats.filter(({_id}) =>_id !== id)
         setChats(data);
         setCurrentChat(null)
-    }
-
+  }
+  
     const matches = useMediaQuery('(max-width: 630px)');
     const maxStyle={width:"20rem",alignSelf:"flex-end"}
     const minStyle={width:"10rem",alignSelf:"flex-end"}
@@ -160,7 +161,7 @@ const Chat = () => {
           <NavIcons/>
         </div>
         {/* Chat Body */}
-        <ChatBox chat={currentChat} currentUser={user._id} setSendMessage={setSendMessage} receiveMessage={receiveMessage} onFocus={handleFocus} onBlur={handleBlur} typing={checkTypingStatus(currentChat)} online={currentChat?checkOnlineStatus(currentChat):""} />
+        <ChatBox chat={currentChat} currentUser={user._id} setSendMessage={setSendMessage} receiveMessage={receiveMessage} onFocus={handleFocus} onBlur={handleBlur} typing={checkTypingStatus(currentChat)} online={currentChat?checkOnlineStatus(currentChat):"" } socketRef={socket} recipient={currentChat?.members.find((member)=>member !== user._id)} />
       </div>
     </div>
   )

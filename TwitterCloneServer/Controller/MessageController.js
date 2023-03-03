@@ -40,3 +40,15 @@ export const deleteMessage = async (req, res) => {
         res.status(500).json(error);
     }
 }
+
+//Delete specific message based on message Id
+export const deleteOneMessage = async (req, res) => {
+    const {messageId} = req.params;
+
+    try {
+        const deleteCount = await MessageModel.deleteOne({ _id: messageId });
+        res.status(200).json({messageId});
+    } catch (error) {
+        res.status(500).json(error);
+    }
+}

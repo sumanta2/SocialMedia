@@ -98,13 +98,22 @@ io.on('connection', (socket) => {
     })
 
 
-    socket.on("send-message", (data) => {
-        const { receiverId } = data
-        const user = activeUsers.find((user) => user.userId === receiverId)
-        if (user) {
+    socket.on("send-message", (data, recipient) => {
+        
+        const user = activeUsers.find((user) => user.userId === recipient)
+        if (user.online==='true') {
             io.to(user.socketId).emit('receive-message', data)
         }
     })
+    socket.on("delete-message", (id, recipient) => { 
+        const user = activeUsers.find(( user) => user.userId === recipient)
+        if (user.online === 'true')
+        {
+            io.to(user.socketId).emit("delete-message-id",id)
+        }
+    })
+
+
     socket.on('offline', async (socket) => {
         activeUsers = await Promise.all(activeUsers.map(async (user) => {
             if (user.userId == socket) {

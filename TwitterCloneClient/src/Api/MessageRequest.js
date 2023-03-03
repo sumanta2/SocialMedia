@@ -6,4 +6,6 @@ export const getMessages=(id)=> API.get(`/message/${id}`);
 
 export const addMessage= (data)=> API.post("/message/",data)
 
-export const deleteMessages= (id)=> API.delete(`/message/${id}`)
+export const deleteMessages = (id) => API.delete(`/message/${id}`)
+
+export const deleteOneMessage = (id) => API.delete(`/message/oneMsg/${id}`)
