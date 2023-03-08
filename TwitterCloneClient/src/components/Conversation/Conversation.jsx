@@ -8,7 +8,7 @@ import {deleteMessages} from "../../Api/MessageRequest";
 import { UilTrashAlt } from '@iconscout/react-unicons'
 import "./Conversation.css";
 
-const Conversation = ({data,currentUserId,online,filterChats}) => {
+const Conversation = ({data,currentUserId,online,filterChats,socketRef,setCurrentChat}) => {
 
     const [userData, setUserData] = useState(null)
     const [hover, setHover] = useState(false);
@@ -27,12 +27,21 @@ const Conversation = ({data,currentUserId,online,filterChats}) => {
         getUserData();
     },[currentUserId,data.members])
 
-    const handleClick= async(id) => {
-      filterChats(id);
-      await deleteChat(id);
-      filterChats(id);
-      await deleteMessages(id)
-    }
+
+  
+  const handleClick = async (id) => {
+    const receiverId = data.members.find((id) => id !== currentUserId)
+    const chatId = data._id
+    filterChats(id);
+    await deleteChat(id);
+    socketRef.current.emit("send-chat-id", chatId, receiverId)
+    setCurrentChat(null)
+    filterChats(id);
+    await deleteMessages(id)
+    return () => { socketRef.current.off("send-chat_id") }
+  }
+
+
   return (
     <>
       <div className='follower conversation'>

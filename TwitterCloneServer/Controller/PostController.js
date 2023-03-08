@@ -1,5 +1,6 @@
 import PostModel from "../Models/postModel.js";
 import UserModel from "../Models/userModel.js"
+import CommentModel from "../Models/CommentModel.js";
 import HashTagModel from "../Models/hashtagModel.js";
 import mongoose from "mongoose";
 import fs from "fs";
@@ -98,6 +99,7 @@ export const deletePost = async (req, res) => {
                     })
                 }
             }
+            await CommentModel.deleteMany({contentId: postId});
             await post.deleteOne()
             res.status(200).json("Post Deleted")
         }

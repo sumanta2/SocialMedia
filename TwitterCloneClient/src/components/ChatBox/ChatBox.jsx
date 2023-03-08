@@ -190,7 +190,8 @@ const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBl
           </>
         ): 
         <span className="chatbox-empty-message">
-          Tap on a Chat to Start conversation
+          
+              Select a Chat
         </span>
       }
         

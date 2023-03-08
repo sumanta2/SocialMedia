@@ -1,4 +1,5 @@
 import ChatModel from "../Models/ChatModel.js";
+import socket from "../index.js"
 
 export const createChat= async(req,res) => {         //it store more than one same value need to fix finally solve this
     const newChat= new ChatModel({
@@ -13,7 +14,8 @@ export const createChat= async(req,res) => {         //it store more than one sa
         if(chat) return res.status(200).json(chat);
 
 
-        const result= await newChat.save();
+        const result = await newChat.save();
+        socket.emit("new-chat", result,req.body.receiverId);
         res.status(200).json(result);
 
     } catch (error) {

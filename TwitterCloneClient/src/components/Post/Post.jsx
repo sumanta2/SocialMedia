@@ -15,17 +15,20 @@ import removeLike from "../../img/animation/61911-remove-like.json"
 import LottieRenderer from '../LottieRenderer/LottieRenderer';
 import Liked from "../../img/Liked.png"
 import UnLiked from "../../img/unLiked.png"
-import { Menu} from '@mantine/core';
+import { Menu, Modal } from '@mantine/core';
+import  CommentComp from '../CommentComp/CommentComp';
+import {createComment,getAllComments,deleteComment} from "../../Api/CommentRequest"
 
 
 
 const Post = ({ data, id }) => {
   const [preventRender, setPreventRender] = useState(true)
+  const [opened, setOpened] = useState(false);
+  const [comments, setComments] = useState([])
+  const [inputComment, setInputComment] = useState("")
   const { user } = useSelector((state) => state.authReducer.authData)
   const posts = useSelector((state) => state.postReducer.posts)
   const dispatch = useDispatch()
-
-
 
 
 
@@ -84,6 +87,39 @@ const Post = ({ data, id }) => {
     window.open(`whatsapp://send?text=${encodedMessage}`);
   }
 
+  const fetchComments = async(id) => {
+    setOpened(true)
+    try {
+      const {data} = await getAllComments(id)
+      setComments(data)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const deleteCommentHandler = async (id) => {
+    try {
+      const data = comments.filter(comment => comment._id !== id)
+      setComments(data)
+      await deleteComment(id)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const createCommentHandler = async () => {
+    const loginUser={firstname:user.firstname,lastname:user.lastname,profilePicture:user.profilePicture}
+    try {
+      var commentData={userId:user._id,contentId:data._id,text:inputComment}
+      setInputComment("")
+      var {data:myVal} = await createComment(commentData)
+      myVal = { ...myVal, user:loginUser }
+      setComments([myVal,...comments])
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <div className="Post">
       {chkImg ? <img src={data?.image ? process.env.REACT_APP_PUBLIC_FOLDER + data.image : ""} alt="" />
@@ -99,7 +135,7 @@ const Post = ({ data, id }) => {
               <LottieRenderer animationData={liked ? addLike : removeLike} height={85} width={85} loop={false} autoplay={true} />}
           </div>
 
-          <img src={Comment} alt="" style={{ "cursor": "pointer" }} />
+          <img src={Comment} alt="" onClick={()=>fetchComments(data._id)} style={{ "cursor": "pointer" }} />
 
 
           <Menu control={<img src={Share} alt=""  style={{"cursor":"pointer"}} />}>
@@ -121,6 +157,20 @@ const Post = ({ data, id }) => {
         <span><b>{data.name}</b></span>
         <span> {data.desc}</span>
       </div>
+      <Modal className='myModal'
+        opened={opened}
+        onClose={() => setOpened(false)}
+        title="Comment"
+        centered
+      >
+        <div className="inputCommentDiv">
+          <input type="text" value={inputComment} onChange={(e)=>setInputComment(e.target.value)} placeholder='Enter your Comment' /> <button className='button ps-button' type="button" onClick={createCommentHandler} disabled={inputComment ===""}> Submit </button>
+        </div>
+        {
+          comments.length === 0 ? <span className='noComment'>Empty Comment</span> :
+            comments.map((comment, index) => <div key={comment._id}><CommentComp comment={comment} userId={user._id} deleteComment={deleteCommentHandler} /></div>)
+        }
+      </Modal>
     </div>
   )
 }
