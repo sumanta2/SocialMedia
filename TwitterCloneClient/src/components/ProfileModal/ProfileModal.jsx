@@ -92,7 +92,7 @@ function ProfileModal({modalOpened,setModalOpened,data}) {
                 Cover Image
                 <input type="file" name="coverImage" onChange={onImageChange}/>
             </div>
-            <button className="button infoButton" onClick={handleSubmit}>Updata</button>
+            <button className="button infoButton" onClick={handleSubmit}>Update</button>
         </form>
     </Modal>
   );

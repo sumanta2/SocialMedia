@@ -3,6 +3,8 @@ import UserModel from "../Models/userModel.js"
 import mongoose from "mongoose"
 import fs from "fs"
 import * as HashTagController from "../Controller/HashTagController.js"
+import CommentModel from "../Models/CommentModel.js"
+
 
 const path= "./public/images/";
 
@@ -80,6 +82,7 @@ export const deletePost = async (req, res) => {
                     })
                 }
             }
+            await CommentModel.deleteMany({contentId: postId});
             await post.deleteOne()
             HashTagController.deleteAll(postId)
             res.status(200).json("Post Deleted")

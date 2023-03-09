@@ -70,7 +70,19 @@ const Chat = () => {
       } 
     }
     getChats()
-  },[user])
+  }, [user])
+  
+
+  useEffect(() => {
+    socket.current.on("add-new-chat", (chat) => {
+      const allChat = [ ...chats, chat ];
+      setChats(allChat);
+    })
+    return () => {
+      socket.current.off("add-new-chat")
+    }
+  }, [chats])
+  
 
 
   useEffect(() => {
@@ -105,9 +117,20 @@ const Chat = () => {
       return ()=>{
         socket.current.off('receive-message');
       }
-    },[])
+    }, [])
+  
+    useEffect(() => { 
+      socket.current.on('delete-chat-id', (id) => {
+        const value = chats.filter(chat => chat._id !== id)
+        setChats(value);  
+        setCurrentChat(null);
+      });
+      return () => {
+        socket.current.off('delete-chat-id')
+      }
+    },[chats])
 
-    const checkOnlineStatus= (chat)=>{//--------------------------------------------
+    const checkOnlineStatus= (chat)=>{
       const chatMember = chat.members.find((member) => member !== user._id)
       const onlineCheck = onlineUsers.find((user) => user.userId === chatMember);
       return onlineCheck?.online==="true"? "true":onlineCheck?.lastSeen;
@@ -146,7 +169,7 @@ const Chat = () => {
           <div className="Chat-list">
            {chats.map((chat)=>(
             <div key={chat._id} onClick={()=> setCurrentChat(chat) }>
-              <Conversation data={chat} currentUserId={user._id} online={checkOnlineStatus(chat)} filterChats={filterChats}  />
+              <Conversation data={chat} currentUserId={user._id} online={checkOnlineStatus(chat)} filterChats={filterChats} socketRef={socket} setCurrentChat={setCurrentChat} />
             </div>
            ))}
           </div>
@@ -167,4 +190,4 @@ const Chat = () => {
   )
 }
 
-export default Chat
+export default Chat;

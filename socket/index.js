@@ -27,7 +27,7 @@ const io = require('socket.io')(8800, {
     pingTimeout: 120000,
     pinInterval: 70000,
     cors: {
-        origin: process.env.ORIGN || 'http://localhost:3000'
+        origin: process.env.ORIGN
     }
 })
 
@@ -110,6 +110,22 @@ io.on('connection', (socket) => {
         if (user.online === 'true')
         {
             io.to(user.socketId).emit("delete-message-id",id)
+        }
+    })
+
+    socket.on("new-chat", (chat,receiverId) => {
+        const user = activeUsers.find((user) => user.userId === receiverId)
+        if (user?.online === 'true')
+        {
+            io.to(user.socketId).emit("add-new-chat", chat);
+        }
+    })
+
+    socket.on("send-chat-id", (chatId, receiverId) => {
+        const user = activeUsers.find((user) => user.userId === receiverId)
+        if (user?.online === 'true')
+        {
+            io.to(user.socketId).emit("delete-chat-id",chatId)
         }
     })
 

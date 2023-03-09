@@ -74,7 +74,12 @@
     display: none;
     }
 }
+@media screen and (max-width: 459px) {
+  .chatbox-empty-message {
+    font-size: 12px;
 
+  }
+}
 
 /* Chat Box Css */
 .ChatBox-container{
