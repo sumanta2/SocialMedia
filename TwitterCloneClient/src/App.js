@@ -28,6 +28,7 @@ function App() {
           <Route path="/chat" element={user? <Chat/> : <Navigate to="../auth"/>}/>
           <Route path="/settings" element={user? <Settings/> : <Navigate to="../auth"/>}/>
           <Route path="/notification" element={user? <Notification/> : <Navigate to="../auth"/>}/>
+          <Route path="/hashtag/:hashtag" element={user? <Notification/> : <Navigate to="../auth"/>}/>
           <Route path="*" element={user? <Page404/> : <Navigate to="../auth"/>} />
         </Routes>
         <Toaster position="top-center" reverseOrder={true}/>
