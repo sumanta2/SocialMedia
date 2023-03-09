@@ -29,6 +29,7 @@ export const getPostsByHashTag = async (req, res) => {
     try {
         const postIdList = await HashTagModel.find({hashtag}).distinct("postId")
         const posts = await PostModel.find({_id : { $in: postIdList}})
+        posts.sort((a,b)=>{ return b.createdAt-a.createdAt})
         res.status(200).json(posts)
     } catch (error) {
         res.status(500).json(error)
