@@ -14,7 +14,6 @@ export const createPost = async (req, res) => {
     const hashtags = HashTagController.fetchFromPost(req.body.desc) //populates if there are any hastags in the post
     req.body.hashtags = hashtags
     const userId = req.body.userId;
-    console.log(req.body.desc, hashtags)
     const newPost = new PostModel(req.body)
     const postId = newPost._id
     try {

@@ -21,7 +21,6 @@ export const commitToDatabase = async (hashtags, userId, postId) => {
     for (let hashtag of hashtags){
         hashTagDocs.push({hashtag, userId, postId})
     }
-    console.log(hashTagDocs)
     await HashTagModel.insertMany(hashTagDocs)
 }
 
