@@ -122,11 +122,15 @@ const Post = ({ data, id }) => {
 
   return (
     <div className="Post">
+      <div className="detail">
+        <span><b>{data.name}</b></span>
+        <span> {data.desc}</span>
+      </div>
       {chkImg ? <img src={data?.image ? process.env.REACT_APP_PUBLIC_FOLDER + data.image : ""} alt="" />
         : chkVdo ?
           <video controls style={{ "maxHeight": "400px" }}>
             <source src={data?.image ? process.env.REACT_APP_PUBLIC_FOLDER + data.image : ""} type="video/mp4" /> </video>
-          : "Sorry can't Found this content"
+          : ""
       }
       <div className="reactionContain">
         <div className="postReact" >
@@ -153,11 +157,8 @@ const Post = ({ data, id }) => {
         </div>
       </div>
       <span style={{ color: "var(--gray)", fontSize: "12px" }}>{likes} likes</span>
-      <div className="detail">
-        <span><b>{data.name}</b></span>
-        <span> {data.desc}</span>
-      </div>
-      <Modal
+
+      <Modal className='myModal'
         opened={opened}
         onClose={() => setOpened(false)}
         title="Comment"

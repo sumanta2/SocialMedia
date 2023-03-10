@@ -1,51 +1,33 @@
-import PostModel from "../Models/postModel.js";
+import PostModel from "../Models/postModel.js"
 import UserModel from "../Models/userModel.js"
-import CommentModel from "../Models/CommentModel.js";
-import HashTagModel from "../Models/hashtagModel.js";
-import mongoose from "mongoose";
-import fs from "fs";
+import mongoose from "mongoose"
+import fs from "fs"
+import * as HashTagController from "../Controller/HashTagController.js"
+import CommentModel from "../Models/CommentModel.js"
+
 
 const path= "./public/images/";
 
 //Create new Post
 
 export const createPost = async (req, res) => {
-    const hashtags = fetchHashTags(req.body.desc) //populates if there are any hastags in the post
+    const hashtags = HashTagController.fetchFromPost(req.body.desc) //populates if there are any hastags in the post
     req.body.hashtags = hashtags
-
+    const userId = req.body.userId;
     const newPost = new PostModel(req.body)
+    const postId = newPost._id
     try {
 
-        await newPost.save()
-
-        // for (let hashtag in hashtag){
-        //     await HashTagModel.find({_id: hashtag}, function (err, docs){
-        //         if (docs.length){
-        //             HashTagModel.updateOne(docs, {_id: hashtag, count: docs.count+1 })
-        //         }else{
-        //             new HashTagModel({_id: hashtag, count: 1}).save()
-        //         }
-        //     })
-        // }
-
+        const createdPost = await newPost.save()
+        HashTagController.commitToDatabase(hashtags, userId, postId)
         res.status(200).json(newPost)
     } catch (error) {
+        print(error)
         res.status(500).json(error)
     }
 }
 
-// process the hashtag 
 
-const fetchHashTags = (message) => {
-    const hashtagsArr = message.match(/#([a-z0-9]+)/g)?.map(e => e.slice(1))
-    return hashtagsArr ? hashtagsArr : []
-}
-
-
-//update or store the hashtag in the database
-const updateHashTags = (hashtag) => {
-
-}
 
 //Get a Post 
 
@@ -101,6 +83,7 @@ export const deletePost = async (req, res) => {
             }
             await CommentModel.deleteMany({contentId: postId});
             await post.deleteOne()
+            HashTagController.deleteAll(postId)
             res.status(200).json("Post Deleted")
         }
         else {

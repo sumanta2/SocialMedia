@@ -1,7 +1,8 @@
 import mongoose from "mongoose"
 const hashtagSchema= mongoose.Schema({
-    _id:{type:String,required:true},
-    count: Number,
+    hashtag:{type:String,required:true},
+    userId:{type:String,required:true},
+    postId:{type:String,required:true},
 },{
     timestamps:true
 });
