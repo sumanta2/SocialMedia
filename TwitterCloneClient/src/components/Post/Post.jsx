@@ -157,7 +157,7 @@ const Post = ({ data, id }) => {
         <span><b>{data.name}</b></span>
         <span> {data.desc}</span>
       </div>
-      <Modal className='myModal'
+      <Modal
         opened={opened}
         onClose={() => setOpened(false)}
         title="Comment"
@@ -166,10 +166,12 @@ const Post = ({ data, id }) => {
         <div className="inputCommentDiv">
           <input type="text" value={inputComment} onChange={(e)=>setInputComment(e.target.value)} placeholder='Enter your Comment' /> <button className='button ps-button' type="button" onClick={createCommentHandler} disabled={inputComment ===""}> Submit </button>
         </div>
+        <div className="commentBox">
         {
           comments.length === 0 ? <span className='noComment'>Empty Comment</span> :
             comments.map((comment, index) => <div key={comment._id}><CommentComp comment={comment} userId={user._id} deleteComment={deleteCommentHandler} /></div>)
-        }
+          }
+        </div>
       </Modal>
     </div>
   )

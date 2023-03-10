@@ -7,9 +7,11 @@ import toast from 'react-hot-toast';
 import { Menu } from '@mantine/core';
 import { UilTrashAlt } from '@iconscout/react-unicons'
 import { UilClipboardNotes } from '@iconscout/react-unicons'
+import LottieRenderer from "../LottieRenderer/LottieRenderer";
+import NoInternetAnimation from "../../img/animation/99311-no-internet.json"
 // import { UilCheck } from '@iconscout/react-unicons'
 
-const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBlur,typing,online,socketRef,recipient}) => {
+const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBlur,typing,online,socketRef,recipient,CheckInternet}) => {
   const [userData, setUserData] = useState(null);
   const [messages, setMessages] = useState([])
   const [newMessage, setNewMessage] = useState("");
@@ -184,11 +186,11 @@ const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBl
                 <button className="button" disabled={true}>+</button>
               </div>
               {/* <button>+</button> */}
-              <InputEmoji value={newMessage} onChange={handleChange} onBlur={()=>{onBlur()}} onFocus={()=>{onFocus()}}/>
-              <button className="send-button button" disabled={!newMessage} onClick={handleSend}>Send</button>
+              <InputEmoji value={newMessage} disabled={!CheckInternet} onChange={handleChange} onBlur={()=>{onBlur()}} onFocus={()=>{onFocus()}}/>
+              <button className="send-button button" disabled={!newMessage || !CheckInternet} onClick={handleSend}>Send</button>
             </div>
           </>
-        ): 
+        ):!CheckInternet? (<div className="noInternetDiv"> <LottieRenderer animationData={NoInternetAnimation} height={200} width={200} loop={false} autoplay={true} />  </div>): 
         <span className="chatbox-empty-message">
           
               Select a Chat

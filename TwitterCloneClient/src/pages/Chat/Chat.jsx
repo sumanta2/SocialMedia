@@ -8,6 +8,9 @@ import ChatBox from '../../components/ChatBox/ChatBox'
 import {io} from "socket.io-client"
 import { useMediaQuery } from '@mantine/hooks';
 import NavIcons from '../../components/NavIcons/NavIcons'
+import toast from 'react-hot-toast';
+import { UilCloudTimes } from '@iconscout/react-unicons'
+
 
 
 
@@ -19,6 +22,7 @@ const Chat = () => {
   const [typingStartUsers,setTypingStartUsers]=useState([])
   const [sendMessage, setSendMessage] = useState(null)
   const [receiveMessage, setReceiveMessage] = useState(null)
+  const [CheckInternet, setCheckInternet] = useState(null)
   // const [messages, setMessages] = useState([])
   const socket= useRef()
 
@@ -35,7 +39,18 @@ const Chat = () => {
       socket.current.off('new-user-add');
       socket.current.off("offline");
     }
-  },[user])
+  }, [user])
+  
+  useEffect(() => {
+    window.addEventListener('online', () => setCheckInternet(true));
+    window.addEventListener('offline', () => setCheckInternet(false));
+    setCheckInternet(navigator.onLine)
+    
+    return () => {
+      window.removeEventListener('online', () => setCheckInternet(true));
+      window.removeEventListener('offline', () => setCheckInternet(false));
+    };
+  }, []);
 
 
   const handleFocus = () => {
@@ -69,8 +84,8 @@ const Chat = () => {
         console.log(error); 
       } 
     }
-    getChats()
-  }, [user])
+     if (CheckInternet) getChats()
+  }, [user,CheckInternet])
   
 
   useEffect(() => {
@@ -104,6 +119,9 @@ const Chat = () => {
       // console.log(sendMessage);
       const recipient=currentChat?.members.find((member)=>member !== user._id)
       socket.current.emit('send-message', sendMessage,recipient);
+    }
+    return () => {
+      socket.current.off('send-message')
     }
   }, [sendMessage])
   
@@ -165,10 +183,16 @@ const Chat = () => {
         <LogoSearch/>
         <div className="Chat-container">
 
-           <h2>Chat</h2>
+          <h2>Chat</h2>
+          {!CheckInternet ?
+            <div className="noInternet">
+              <UilCloudTimes className="offlineIcon" />
+              <span className="offlineText">No Internet</span>
+            </div> : ""}
           <div className="Chat-list">
            {chats.map((chat)=>(
-            <div key={chat._id} onClick={()=> setCurrentChat(chat) }>
+            <div key={chat._id} onClick={()=> CheckInternet?setCurrentChat(chat):toast.error('No Network',{ duration: 3000 })
+          }>
               <Conversation data={chat} currentUserId={user._id} online={checkOnlineStatus(chat)} filterChats={filterChats} socketRef={socket} setCurrentChat={setCurrentChat} />
             </div>
            ))}
@@ -184,7 +208,7 @@ const Chat = () => {
           <NavIcons/>
         </div>
         {/* Chat Body */}
-        <ChatBox chat={currentChat} currentUser={user._id} setSendMessage={setSendMessage} receiveMessage={receiveMessage} onFocus={handleFocus} onBlur={handleBlur} typing={checkTypingStatus(currentChat)} online={currentChat?checkOnlineStatus(currentChat):"" } socketRef={socket} recipient={currentChat?.members.find((member)=>member !== user._id)} />
+        <ChatBox chat={currentChat} currentUser={user._id} setSendMessage={setSendMessage} receiveMessage={receiveMessage} onFocus={handleFocus} onBlur={handleBlur} typing={checkTypingStatus(currentChat)} online={currentChat?checkOnlineStatus(currentChat):"" } socketRef={socket} recipient={currentChat?.members.find((member)=>member !== user._id)} CheckInternet={CheckInternet} />
       </div>
     </div>
   )

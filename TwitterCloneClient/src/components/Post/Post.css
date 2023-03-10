@@ -47,8 +47,11 @@
 }
 .mantine-Paper-root{
     padding:1rem !important;
+}
+.commentBox{
+    height:65vh;
     overflow-y: scroll;
-    height: 70vh;
+    margin-top:3px;
 }
 .noComment{
     display: flex;

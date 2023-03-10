@@ -1,4 +1,3 @@
-/* 146 */
 
 .Chat {
   position: relative;
@@ -23,6 +22,14 @@
   height: auto;
   min-height: 80vh;
   overflow: scroll;
+}
+
+.noInternet{
+  background: red;
+  color: white;
+  padding: 3px;
+  border-radius: 0px 12px 12px 0px;
+  margin-left: 10px;
 }
 
 .Chat-list {
@@ -193,6 +200,25 @@
   }
 } */
 
+.noInternetDiv{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding-top: 125px;
+}
+.offlineIcon{
+  margin:0px 5px;
+}
+.offlineText{
+  position: relative;
+  bottom: 5px;
+}
+@media only screen and (max-width: 800px) {
+  .offlineText{
+    display:none;
+  }
+}
 @media only screen and (max-width: 500px) {
   .Chat-container{
     padding-left: 0px;
