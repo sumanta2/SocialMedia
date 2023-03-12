@@ -1,6 +1,9 @@
-import axios from "axios";
+// import axios from "axios";
 
-const API = axios.create({baseURL:process.env.REACT_APP_BASE_URL})
+// const API = axios.create({baseURL:process.env.REACT_APP_BASE_URL})
+
+import { instance as API } from "./CommonRequests"
+
 
 export const getMessages=(id)=> API.get(`/message/${id}`);
 

@@ -1,5 +1,8 @@
-import axios from "axios"
-const API=axios.create({baseURL:process.env.REACT_APP_BASE_URL})
+// import axios from "axios"
+import { instance as API } from "./CommonRequests"
+
+
+// const API=axios.create({baseURL:process.env.REACT_APP_BASE_URL})
 
 
 export const getTimelinePosts= (id)=>API.get(`/post/${id}/timeline`)

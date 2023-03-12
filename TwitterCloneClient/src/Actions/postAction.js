@@ -6,12 +6,18 @@ export const getTimelinePosts= (id)=> async(dispatch)=>{
     try{
         const {data}= await PostApi.getTimelinePosts(id);   //here it return blank array if no post present
         
-        dispatch({type:"RETREIVING_SUCCESS",data:data})
-    } 
+            dispatch({type:"RETREIVING_SUCCESS",data:data}) 
+    }
     catch(error)
     {
-        dispatch({type:"RETREIVING_FAIL"})
-        console.log(error)
+        dispatch({ type: "RETREIVING_FAIL" })
+        if (error?.message)
+        {
+            console.log(error.message)
+        }
+        else {
+            console.log(error)
+        }
     }
 }
 
@@ -22,8 +28,14 @@ export const deletePost= (id,userId)=> async(dispatch)=>{  //"id" is the post Id
          await PostApi.deletePost(id,userId)
         dispatch({type:"DELETE_SUCCESS",id:id})
     } catch (error) {
-        console.log(error)
-        dispatch({type:"DELETE_FAILED"})
+        dispatch({ type: "DELETE_FAILED" })
+        if (error?.message)
+        {
+            console.log(error.message)
+        }
+        else {
+            console.log(error)
+        }
     }
 }
 
@@ -43,7 +55,13 @@ export const likeUnlikePost= (data,userId)=> async(dispatch)=>{  //"id" is the p
         }
     } catch (error) 
     {
-        console.log(error)
+        if (error?.message)
+        {
+            console.log(error.message)
+        }
+        else {
+            console.log(error)
+        }
         if(exist)
         {
             dispatch({type:"LIKE_SUCCESS",id:data._id,userId:userId})
@@ -55,11 +73,3 @@ export const likeUnlikePost= (data,userId)=> async(dispatch)=>{  //"id" is the p
 
     }
 }
-
-// posts: state.posts.filter((post)=>post._id === action.id).likes.includes(action.userId)?state.posts.filter((post)=>post._id === action.id).likes.filter(id=>id!==action.userId):state.posts.filter((post)=>post._id === action.id).likes=[...state.posts.filter((post)=>post._id === action.id).likes,action.userId]
-
-// case "LIKE_SUCCESS":
-    //     return { ...state, posts:[...state.posts?.filter((post)=>post._id !==action.id),{...state.posts?.filter((post)=>post._id ===action.id),likes:[...state.posts.filter((post)=>post._id ===action.id)?.likes,action.userId]}], loading: false, error: false };
-
-// case "UNLIKE_SUCCESS":
-    //     return { ...state,posts:[...state.posts.filter((post)=>post._id !==action.id),{...state.posts.filter((post)=>post._id ===action.id),likes:[...state.posts.filter((post)=>post._id ===action.id).likes.filter((like)=> like !==action.userId)]}], loading: false, error: true };
