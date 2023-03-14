@@ -36,3 +36,11 @@ export const getPostsByHashTag = async (req, res) => {
     }
 }
 
+export const getAllHashTag = async (req,res) => {
+    try {
+        
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
+
