@@ -8,6 +8,12 @@
     display: flex;
     gap:1rem;
 }
-.infoInput{
-    padding:13px;
-}
+
+@media only screen and (max-width: 855px) {
+    .infoFrom>div{
+        flex-direction: column;
+    }
+    .infoFrom>div>input{
+        padding:14px;
+    }
+  }

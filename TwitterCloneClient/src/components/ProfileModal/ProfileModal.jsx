@@ -5,6 +5,8 @@ import { useParams } from 'react-router-dom';
 import {uploadImage} from "../../Actions/uploadAction";
 import { updateUser } from '../../Actions/userAction';
 import "./ProfileModal.css"
+import { useMediaQuery } from '@mantine/hooks';
+
 
 function ProfileModal({modalOpened,setModalOpened,data}) {
   const theme = useMantineTheme();
@@ -14,7 +16,9 @@ function ProfileModal({modalOpened,setModalOpened,data}) {
   const [profileImage,setProfileImage]=useState(null)
   const [coverImage, setCoverImage] = useState(null)
   const dispatch=useDispatch()
-  const param=useParams()
+  const param = useParams()
+  
+  const screenSize = useMediaQuery('(min-width: 500px)');
   // const {user}=useSelector((state)=>state.authReducer.authData)
   // console.log(other)
 
@@ -62,11 +66,11 @@ function ProfileModal({modalOpened,setModalOpened,data}) {
   }
 
   return (
-    <Modal style={{display:"flex"}}
+    <Modal style={{ display: "flex" }}
       overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
       overlayOpacity={0.55}
       overlayBlur={3}
-      size="55%"
+      size={screenSize?"55%":"95%"}
       opened={modalOpened}
       onClose={()=>setModalOpened(false)}
     >

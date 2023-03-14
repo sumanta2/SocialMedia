@@ -23,21 +23,21 @@ const NavIcons = () => {
     <div className="navIcons">
         <Link to="../home">
         {location.pathname === "/home" ? <LottieRenderer animationData={HomeAnimation} height={32} width={38} loop={false} autoplay={true} />
-        :<img src={HomeImage} alt="" style={{height:"26px",width:"26px",paddingTop:"2px"}} />  }
+        :<img src={HomeImage} alt="" style={{height:"30px",width:"33px",padding:"4px 2px 2px 2px"}} />  }
         </Link>
 
         <Link to="../settings">
-        {location.pathname==="/settings" ? <LottieRenderer animationData={SettingAnimation} height={30} width={30} loop={false} autoplay={true}/>: <img src={SettingImage} alt="" style={{height:"26px",width:"26px",paddingTop:"2px"}} /> }
+        {location.pathname==="/settings" ?<div style={{paddingTop:"4px"}}> <LottieRenderer  animationData={SettingAnimation} height={30} width={30} loop={false} autoplay={true}/></div>: <img src={SettingImage} alt="" style={{height:"26px",width:"26px",paddingTop:"6px"}} /> }
         </Link>
 
         <Link to="../notification" style={{transform:"translate(0px, -4px)"}}>
         {location.pathname === "/notification" ?<LottieRenderer animationData={NotificationAnimation} height={40} width={45} loop={false} autoplay={true} />
-          :<img src={NotificationImage} alt="" style={{height:"29px",width:"24px",left:"-0px",paddingTop:"6px",position:"relative",margin:"0px 12px"}} /> }
+          :<img src={NotificationImage} alt="" style={{height:"29px",width:"24px",left:"-2px",paddingTop:"9px",position:"relative",margin:"0px 12px"}} /> }
         </Link>
 
         <Link to="../chat" className='chatClass'>
         {location.pathname === "/chat" ?<LottieRenderer animationData={ChatAnimation} height={34} width={75} loop={false} autoplay={true} />
-          :<img src={ChatImage} alt="" style={{height:"26px",width:"48px",padding:"0px 13px",paddingTop:"4px"}} /> }
+          :<img src={ChatImage} alt="" style={{height:"26px",width:"48px",padding:"4px 13px 0px 15px"}} /> }
         </Link>
     </div>
   )

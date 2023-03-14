@@ -4,14 +4,23 @@ import { getAllUser } from '../../Api/UserRequest'
 import User from '../User/User'
 import "./FollowersCard.css"
 const FollowersCard = () => {
-    const [persons,setPersons]=useState([])
-    const {user}= useSelector((state)=>state.authReducer.authData)
+    const [persons, setPersons] = useState([])
+    const [error, setError] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const { user } = useSelector((state) => state.authReducer.authData)
 
     useEffect(() => {
-        const fetchPersons= async ()=>{                              
-            const {data}= await getAllUser();    
-            setPersons(data)
-            // console.log(data)
+        const fetchPersons = async () => {   
+            try {
+                setLoading(true)
+                const {data}= await getAllUser();    
+                setPersons(data)
+                setLoading(false)
+            } catch (error) {
+                setLoading(false)
+                setError(true)
+                console.log(error)
+            }
         }
         fetchPersons();
      
@@ -19,6 +28,7 @@ const FollowersCard = () => {
     return (
         <div className="FollowersCard">
             <h3>People You may Know...</h3>
+            
             {persons.map((person, id) => {
                 if(person._id !== user._id)
                 {
@@ -27,6 +37,7 @@ const FollowersCard = () => {
                 return null;
 
             })}
+            {loading? "  Loading...":error? "Cannot Fetch Data":""}
         </div>
     )
 }
