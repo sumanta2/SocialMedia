@@ -139,7 +139,7 @@ const Post = ({ data, id }) => {
               <LottieRenderer animationData={liked ? addLike : removeLike} height={85} width={85} loop={false} autoplay={true} />}
           </div>
 
-          <img src={Comment} alt="" onClick={()=>fetchComments(data._id)} style={{ "cursor": "pointer" }} />
+          <img src={Comment} alt="" onClick={()=>fetchComments(data._id)} style={{ "cursor": "pointer",zIndex:"12" }} />
 
 
           <Menu control={<img src={Share} alt=""  style={{"cursor":"pointer"}} />}>

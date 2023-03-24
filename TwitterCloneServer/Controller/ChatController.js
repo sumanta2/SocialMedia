@@ -1,4 +1,6 @@
 import ChatModel from "../Models/ChatModel.js";
+import MessageModel from "../Models/MessageModel.js";
+
 import socket from "../index.js"
 
 export const createChat= async(req,res) => {         //it store more than one same value need to fix finally solve this
@@ -48,6 +50,7 @@ export const findChat = async (req, res) =>{
 
 export const deleteChat = async (req, res) => {
     try {
+        await MessageModel.deleteMany({chatId:req.params.id});
         const deleteCount = await ChatModel.deleteOne({_id: req.params.id});
         res.status(200).json({...deleteCount,deleteChat:req.params.id});
         

@@ -97,6 +97,29 @@ io.on('connection', (socket) => {
         io.emit('get-users', activeUsers)
     })
 
+    socket.on("new-user-delete", async (userId) => {
+        let data;
+        let other = [];
+        for (let x of activeUsers) {
+            if (x.userId === userId) {
+                data = x;
+            } else {
+                other.push(x);
+            }
+        }
+        activeUsers = other;
+        try {
+            if (data?.userId) await LiveUsersModel.deleteOne({ userId: data.userId })
+            
+            if (data?.online === "true")
+            {
+            io.emit('get-users', activeUsers)
+            }
+        } catch (error) {
+            //activeUsers.push(data)
+            console.log(error)
+        }
+    })
 
     socket.on("send-message", (data, recipient) => {
         

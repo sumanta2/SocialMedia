@@ -1,4 +1,3 @@
-Helping Video: https://youtu.be/WWhgssiyfwY
 
 "yarn"     this command work like "npm install"
 
@@ -15,11 +14,7 @@ for socket.io client install "socket.io-client"
 yarn start   to start project
 
 
-vdo:1:17:17 how remove scrollbar using css
 
-vdo 1:40:42 may generate error{css};
-
-vdo:3rd 1:11:37
 
 
 #client part and server part are upload github separately 
@@ -28,7 +23,6 @@ npm i redux redux-thunk react-redux install this to use redux store
 
 "proxy":"http://localhost:5000", add this in vdo 30:35 in package.json so react easily communicate to this server
 
-vdo complete 2:48:20   url link: https://youtu.be/VQCeu2mq8wE 
 
 -----------------------------------LOGIN CREDENTIALS-----------------------------------
 
@@ -49,3 +43,8 @@ in Profile.js in PostSide component we does not pass opened and setOpened object
 IMP::::   First run socket.io server then run Backend server then run frontend server
 
 iconscout url https://iconscout.com/unicons/   (from here i download the Icons which package already installed)
+
+
+if delete a post all comment of this post is automatically deleted
+
+if delete a chat all message of this chat are also deleted

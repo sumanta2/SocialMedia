@@ -8,6 +8,12 @@
     border-radius: 10px;
     padding:5px;
 }
+.appName{
+    width: 190px;
+    font-weight: 600;
+    font-size: 24px;
+    color: var(--orange);
+}
 .Search>input{
     background-color: transparent;
     border: none;

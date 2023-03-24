@@ -4,7 +4,7 @@
 import React,{useState,useEffect} from 'react'
 import {getUser} from '../../Api/UserRequest'
 import {deleteChat} from "../../Api/ChatRequests";
-import {deleteMessages} from "../../Api/MessageRequest";
+// import {deleteMessages} from "../../Api/MessageRequest";
 import { UilTrashAlt } from '@iconscout/react-unicons'
 import "./Conversation.css";
 
@@ -37,7 +37,7 @@ const Conversation = ({data,currentUserId,online,filterChats,socketRef,setCurren
     socketRef.current.emit("send-chat-id", chatId, receiverId)
     setCurrentChat(null)
     filterChats(id);
-    await deleteMessages(id)
+    // await deleteMessages(id)
     return () => { socketRef.current.off("send-chat_id") }
   }
 

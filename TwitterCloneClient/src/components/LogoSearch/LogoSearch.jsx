@@ -8,10 +8,11 @@ const LogoSearch = () => {
     <div className='LogoSearch'>
         <img src={Logo} alt=""/>
         <div className="Search">
-            <input type="text" placeholder="#Explore" />
+            {/* <input type="text" placeholder="#Explore" />
             <div className="s-icon">
                 <UilSearch/>
-            </div>
+            </div> */}
+        <span className='appName'>Twitter</span>
         </div>
     </div>
   )

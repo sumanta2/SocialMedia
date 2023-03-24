@@ -71,6 +71,16 @@ export const deleteComment = async (req, res) => {
     }
 }
 
+//Delete All comment of Specific Post
+export const deleteCommentsSpecificPost = async (req, res) => {
+  try {
+    const deleteCount = await CommentModel.deleteMany({ contentId: req.params.postId })
+    res.status(200).json({...deleteCount,deleteComment:req.params.postId})
+  } catch (error) {
+    res.status(500).json(error);
+  }
+}
+
 //Like and un-liked or an comment
 export const likeComment = async (req, res) => {
   const CommentId = req.params.commentId

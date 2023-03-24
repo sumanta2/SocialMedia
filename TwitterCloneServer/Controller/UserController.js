@@ -1,4 +1,10 @@
 import UserModel from "../Models/userModel.js";  //if here does not provide .js as extension it generate error 
+import { UserSchema } from "../Models/userModel.js";
+import socket from "../index.js"
+import PostModel from "../Models/postModel.js"; 
+import CommentModel from "../Models/CommentModel.js";
+import ChatModel from "../Models/ChatModel.js";
+import MessageModel from "../Models/MessageModel.js";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken";
 
@@ -67,23 +73,54 @@ export const updateUser= async (req,res)=>{
 }
 
 
-//Delete User
+// //Delete User
 
-export const DeleteUser = async (req,res)=>{
-    const id=req.params.id 
-    const {currentUserId,currentUserAdminStatus}=req.body
-    if(currentUserId || currentUserAdminStatus)
-    {
-        try {
-            await UserModel.findByIdAndDelete(id)
-            res.status(200).json("User deleted successfully")
-        } catch (error) {
-            res.status(500).json(error)
+// export const DeleteUser = async (req,res)=>{
+//     const id=req.params.id
+//     const {currentUserId,currentUserAdminStatus}=req.body
+//     if(currentUserId || currentUserAdminStatus)    //here currentUserId does not get proper value from middleware need check if used
+//     {
+//         try {
+//             await UserModel.findByIdAndDelete(id)
+//             res.status(200).json("User deleted successfully")
+//         } catch (error) {
+//             res.status(500).json(error)
             
-        }
-    }
-    else{
-        res.status(403).json("Access Denied! You can Delete Only Your own password")
+//         }
+//     }
+//     else{
+//         res.status(403).json("Access Denied! You can Delete Only Your own password")
+//     }
+// }
+
+//delete an user's account an delete all post share by him and delete all comments present on his shared post
+// delete from live user's list try remove if anyone follow you or you follow anyone ##This feature i will add letter
+export const DeleteUser = async (req, res) => {
+    
+    const id = req.params.id;
+    try {
+        const postIdsPromise = PostModel.find({ userId: id }).distinct('_id');
+        const chatIdsPromise = ChatModel.find({ members: { $in: id } }).distinct('_id');
+
+        const [postIds, chatIds] = await Promise.all([postIdsPromise, chatIdsPromise]);
+
+        
+        const promises = [
+            CommentModel.deleteMany({ contentId: { $in: postIds } }).catch(err => { throw err }),
+            PostModel.deleteMany({ userId: id }).catch(err => { throw err }),
+            MessageModel.deleteMany({ chatId: { $in: chatIds } }).catch(err => { throw err }),
+            ChatModel.deleteMany({ _id: { $in: chatIds } }).catch(err => { throw err }),
+            //UserModel.findByIdAndDelete(id).catch(err => { throw err }),
+        ];
+        await Promise.all(promises);
+        socket.emit("new-user-delete", id);// here i make a socket request to socket server to delete liveUsers data
+        res.status(200).json({delete: true});
+
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({error})
+
     }
 }
 
