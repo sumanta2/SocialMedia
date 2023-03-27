@@ -1,12 +1,14 @@
 import React from 'react'
 import "./Page404.css"
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import Home from "../../img/home.png"
 import animation404 from "../../img/animation/98642-error-404.json"
 import LottieRenderer from '../../components/LottieRenderer/LottieRenderer'
 
 
 const Page404 = () => {
+  const { animationRepeatType } = useSelector((state) => state.settingsReducer.Animation) 
 
   return (
     <div className="parentDiv">
@@ -24,7 +26,7 @@ const Page404 = () => {
 
 
       <div className='imageContainer'>
-      <LottieRenderer animationData={animation404} height={400} width={400} loop={false} autoplay={true}/>
+      <LottieRenderer animationData={animation404} height={400} width={400} loop={animationRepeatType==='loop'?true:false} autoplay={animationRepeatType==='one' || animationRepeatType==='loop' ?true:false}/>
       </div>
     </div>
   )

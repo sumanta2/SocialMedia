@@ -15,7 +15,8 @@ import { UilCloudTimes } from '@iconscout/react-unicons'
 
 
 const Chat = () => {
-  const {user} = useSelector((state)=> state.authReducer.authData)
+  const { user } = useSelector((state) => state.authReducer.authData)
+  const {notificationDuration}=useSelector((state) => state.settingsReducer.Notification)
   const [chats, setChats] = useState([])
   const [currentChat, setCurrentChat] = useState(null)
   const [onlineUsers, setOnlineUsers] = useState([])
@@ -191,7 +192,7 @@ const Chat = () => {
             </div> : ""}
           <div className="Chat-list">
            {chats.map((chat)=>(
-            <div key={chat._id} onClick={()=> CheckInternet?setCurrentChat(chat):toast.error('No Network',{ duration: 3000 })
+            <div key={chat._id} onClick={()=> CheckInternet?setCurrentChat(chat):toast.error('No Network',{ duration: parseInt(notificationDuration) })
           }>
               <Conversation data={chat} currentUserId={user._id} online={checkOnlineStatus(chat)} filterChats={filterChats} socketRef={socket} setCurrentChat={setCurrentChat} />
             </div>

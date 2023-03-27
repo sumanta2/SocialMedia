@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef} from "react";
 import { getUser } from "../../Api/UserRequest";
 import { addMessage, getMessages,deleteOneMessage } from "../../Api/MessageRequest";
 import moment from 'moment';
+import { useSelector } from 'react-redux'
 import InputEmoji from "react-input-emoji";
 import toast from 'react-hot-toast';
 import { Menu } from '@mantine/core';
@@ -15,6 +16,8 @@ const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBl
   const [userData, setUserData] = useState(null);
   const [messages, setMessages] = useState([])
   const [newMessage, setNewMessage] = useState("");
+  const { notificationDuration } = useSelector((state) => state.settingsReducer.Notification)
+  const { animationRepeatType } = useSelector((state) => state.settingsReducer.Animation)  
   // const [reachMessage,setReachMessage]=useState(false)
   const scroll= useRef()
 
@@ -95,7 +98,7 @@ const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBl
     socketRef.current?.on("delete-message-id", (id) => {
       const value = messages.filter((message) => message._id !== id)
       setMessages(value)
-      toast.success('One Message deleted By user', { duration: 3000 });
+      toast.success('One Message deleted By user', { duration: parseInt(notificationDuration) });
     })
     return () => {
         socketRef.current?.off("delete-message-id")
@@ -118,7 +121,7 @@ const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBl
   const copyToClipboard = async (data) => {
     try {
       await navigator.clipboard.writeText(data);
-      toast.success('Text Copied', { duration: 3000 });
+      toast.success('Text Copied', { duration: parseInt(notificationDuration) });
     }
     catch (error) {
       console.error("Failed to copy text: ", error);
@@ -190,7 +193,7 @@ const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBl
               <button className="send-button button" disabled={!newMessage || !CheckInternet} onClick={handleSend}>Send</button>
             </div>
           </>
-        ):!CheckInternet? (<div className="noInternetDiv"> <LottieRenderer animationData={NoInternetAnimation} height={200} width={200} loop={false} autoplay={true} />  </div>): 
+        ):!CheckInternet? (<div className="noInternetDiv"> <LottieRenderer animationData={NoInternetAnimation} height={200} width={200} loop={animationRepeatType==='loop'?true:false} autoplay={animationRepeatType==='one' || animationRepeatType==='loop'?true:false} />  </div>): 
         <span className="chatbox-empty-message">
           
               Select a Chat

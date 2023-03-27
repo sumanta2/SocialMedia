@@ -13,7 +13,8 @@ import toast from 'react-hot-toast';
 
 
 const PostShare = ({Opened,setOpened}) => {
-    const loading=useSelector((state)=>state.postReducer.uploading)
+    const loading = useSelector((state) => state.postReducer.uploading)
+    const {notificationDuration}=useSelector((state) => state.settingsReducer.Notification)
     const [image,setImage]=useState(null)
     const [acceptFileType, setAcceptFileType] = useState({image:"null",video:null})
     const [trackText, setTrackText] = useState("")
@@ -44,13 +45,13 @@ const PostShare = ({Opened,setOpened}) => {
                 setAcceptFileType({image:chkImg,video:chkVdo})
                 if(name !=="myImg" && chkImg) 
                 {
-                    toast.error('Only mp4,mov,wmv,avi format allowed', {duration: 4000});
+                    toast.error('Only mp4,mov,wmv,avi format allowed', {duration: parseInt(notificationDuration)});
                     setImage(null)
                 }
                 else if(name !=="myVdo" && chkVdo)
                 { 
                     setImage(null)
-                    toast.error('Only jpg,png,jpeg,gif format allowed', {duration: 4000});
+                    toast.error('Only jpg,png,jpeg,gif format allowed', {duration: parseInt(notificationDuration)});
                  }
             }
             
@@ -85,7 +86,7 @@ const PostShare = ({Opened,setOpened}) => {
         }
         dispatch(uploadPost(newPost))
         reset()
-        toast.success('Posted', {duration: 3000,});
+        toast.success('Posted', {duration: parseInt(notificationDuration),});
     }
     return (
         <div className="PostShare">

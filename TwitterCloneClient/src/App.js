@@ -9,12 +9,20 @@ import {Routes,Route,Navigate} from "react-router-dom"
 import Chat from "./pages/Chat/Chat";
 import { useSelector } from "react-redux";
 import { Toaster } from 'react-hot-toast';
+import {useState,useEffect} from "react"
 
 
 
 
 function App() {
-    const user=useSelector((state)=>state.authReducer.authData)
+  const user = useSelector((state) => state.authReducer.authData)
+  const [getNotificationDirection, setNotificationDirection] = useState("top-center")
+  const { notificationDirection } = useSelector((state) => state.settingsReducer.Notification)
+  
+  useEffect(() => {
+    setNotificationDirection(notificationDirection)
+  }, [notificationDirection])
+  
 
   return (
     <div className="App">
@@ -30,7 +38,7 @@ function App() {
           <Route path="/notification" element={user? <Notification/> : <Navigate to="../auth"/>}/>
           <Route path="*" element={user? <Page404/> : <Navigate to="../auth"/>} />
         </Routes>
-        <Toaster position="top-center" reverseOrder={true}/>
+      <Toaster position={getNotificationDirection} reverseOrder={true}/>
     </div>
 
   );
