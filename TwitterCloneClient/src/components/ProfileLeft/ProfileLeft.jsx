@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { lazy, Suspense } from 'react'
 import { useMediaQuery } from '@mantine/hooks';
-import FollowersCard from '../FollowersCard/FollowersCard'
+//import FollowersCard from '../FollowersCard/FollowersCard'
 import RightSide from '../RightSide/RightSide';
 import InfoCard from '../InfoCard/InfoCard'
 import LogoSearch from '../LogoSearch/LogoSearch'
 import { useLocation } from 'react-router-dom';
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from '../Fallbacks/ErrorFallBack';
+const FollowersCard = lazy(() => import('../FollowersCard/FollowersCard'))
+
 const ProfileLeft = () => {
   let location=useLocation();
   let dataval=location?.pathname.search("/profile");
@@ -14,7 +18,12 @@ const ProfileLeft = () => {
     <div >
         <LogoSearch/>
         <InfoCard/>
-        <FollowersCard/>
+      
+      <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {  }}> 
+        <Suspense fallback={<div>Loading...</div>}>
+          <FollowersCard />
+        </Suspense>
+      </ErrorBoundary>
          {
           dataval!== -1 ? matches1 ? matches?<RightSide/> :"":"":""
         }

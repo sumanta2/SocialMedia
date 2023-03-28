@@ -9,6 +9,21 @@
     gap:1rem;
 }
 
+.infoInput{
+    border: none;
+    outline: none;
+    background-color: var(--inputColor);
+    border-radius:8px;
+    padding:13px;
+    flex:1;
+}
+
+.infoButton{
+    width:6rem;
+    height:2rem;
+    align-self: flex-end;
+}
+
 @media only screen and (max-width: 855px) {
     .infoFrom>div{
         flex-direction: column;

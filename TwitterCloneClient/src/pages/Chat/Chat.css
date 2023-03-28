@@ -43,6 +43,24 @@
   flex-direction: column;
   gap: 1rem;
 }
+.follower>div{
+  display:flex;
+  gap:10px;
+}
+.name {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+.name>span:nth-of-type(1) {
+  font-weight: bold;
+}
+.followerImage {
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+}
 .conversation:hover {
   background: #80808038;
   cursor: pointer;
