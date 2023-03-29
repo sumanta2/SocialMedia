@@ -1,7 +1,8 @@
 import express from "express"
-import { getPostsByHashTag } from "../Controller/HashTagController.js"
+import { getPostsByHashTag, getTrending } from "../Controller/HashTagController.js"
 const router= express.Router()
 
-router.get('/:hashtag', getPostsByHashTag)
+router.get('/tag/:hashtag', getPostsByHashTag)
+router.get('/trending', getTrending)
 
 export default router;

@@ -44,3 +44,20 @@ export const getAllHashTag = async (req,res) => {
     }
 }
 
+
+export const getTrending = async (req,res) => {
+    try {
+        const now = new Date();
+        const limitTime = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));
+        const pipeline = [
+            { $match : { createdAt: {$gt : limitTime} } },
+            { $group : { _id: '$hashtag', count : {$sum: 1}  } },
+            { $sort: { count: -1 } },
+        ]
+        const trendingResult = await HashTagModel.aggregate(pipeline);
+        res.status(200).json(trendingResult)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error)
+    }
+}
