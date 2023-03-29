@@ -28,7 +28,7 @@ const Post = ({ data, id }) => {
   const [inputComment, setInputComment] = useState("")
   const { user } = useSelector((state) => state.authReducer.authData)
   const posts = useSelector((state) => state.postReducer.posts)
-  const {notificationDuration}=useSelector((state) => state.settingsReducer.Notification)
+  const { notificationDuration,notificationOn } = useSelector((state) => state.settingsReducer.Notification)
   const dispatch = useDispatch()
 
 
@@ -46,7 +46,7 @@ const Post = ({ data, id }) => {
   const [likes, setLikes] = useState(data.likes.length)  //data.likes show it is empty but it show its length is 1
 
   const handleDelete = (e) => {
-    toast.success('Deleted', { duration: parseInt(notificationDuration) });
+    { notificationOn && toast.success('Deleted', { duration: parseInt(notificationDuration) }); }
     dispatch(deletePost(data._id, user._id))
   }
 
@@ -61,13 +61,13 @@ const Post = ({ data, id }) => {
     dispatch(likeUnlikePost(data, user._id))
     if (liked) {
       setLikes((prev) => prev - 1)
-      toast.success('UnLiked', { duration: parseInt(notificationDuration) });
+      { notificationOn && toast.success('UnLiked', { duration: parseInt(notificationDuration) }); }
 
     }
     else {
 
       setLikes((prev) => prev + 1)
-      toast.success('Liked', { duration: parseInt(notificationDuration) });
+      { notificationOn && toast.success('Liked', { duration: parseInt(notificationDuration) }); }
     }
   }
 
@@ -75,7 +75,7 @@ const Post = ({ data, id }) => {
     const link = process.env.REACT_APP_PUBLIC_FOLDER + data.image;
     try {
       await navigator.clipboard.writeText(link);
-      toast.success('Link Copied', { duration: parseInt(notificationDuration) });
+      { notificationOn && toast.success('Link Copied', { duration: parseInt(notificationDuration) }); }
     }
     catch (error) {
       console.error("Failed to copy text: ", error);

@@ -6,6 +6,9 @@
     padding: 1rem;
     border-radius: 1rem;
     padding-left: 2rem;
+    min-height: 23rem;
+    max-height: 22rem;
+    overflow: scroll;
 }
 .trend{
     display: flex;

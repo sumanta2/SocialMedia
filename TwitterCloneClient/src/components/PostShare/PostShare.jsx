@@ -14,7 +14,7 @@ import toast from 'react-hot-toast';
 
 const PostShare = ({Opened,setOpened}) => {
     const loading = useSelector((state) => state.postReducer.uploading)
-    const {notificationDuration}=useSelector((state) => state.settingsReducer.Notification)
+    const {notificationDuration,notificationOn}=useSelector((state) => state.settingsReducer.Notification)
     const [image,setImage]=useState(null)
     const [acceptFileType, setAcceptFileType] = useState({image:"null",video:null})
     const [trackText, setTrackText] = useState("")
@@ -86,7 +86,7 @@ const PostShare = ({Opened,setOpened}) => {
         }
         dispatch(uploadPost(newPost))
         reset()
-        toast.success('Posted', {duration: parseInt(notificationDuration),});
+        { notificationOn && toast.success('Posted', { duration: parseInt(notificationDuration), }); }
     }
     return (
         <div className="PostShare">

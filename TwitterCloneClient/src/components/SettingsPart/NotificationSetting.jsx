@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateNotificationSetting } from '../../Actions/settingsAction';
-import { Select } from '@mantine/core';
+import { Select, Switch } from '@mantine/core';
 import "./SettingStyle.css"
 
 
@@ -15,9 +15,8 @@ const NotificationSetting = () => {
     setValue(Notification)
   }, [Notification])
 
-
-  const handleChange = (e, name) => {
-    setValue({ ...value, [name]: e })
+  const handleChange = (ex, name) => {
+    setValue({ ...value, [name]: ex })
   }
 
   const saveNotification = () => {
@@ -60,7 +59,14 @@ const NotificationSetting = () => {
         />
       </div>
 
-      <button className="button setting-button" onClick={saveNotification} >Save</button>
+      <div className="directionContainer">
+        <label htmlFor="repeat" className='labels'>Notification On / Off:</label>
+        <Switch onLabel="ON" offLabel="OFF" color="orange" size="lg" checked={value.notificationOn} onChange={(event) =>  handleChange(event.currentTarget.checked, "notificationOn") } />
+        
+        
+      </div>
+
+      <button className="button setting-button" onClick={saveNotification}>Save</button>
     </div>
   )
 }

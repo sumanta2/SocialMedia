@@ -1,6 +1,6 @@
-const notification = { notificationDirection: 'top-left',notificationDuration: 3000 };
+const notification = { notificationDirection: 'top-left',notificationDuration: '3000',notificationOn:true};
 const animation = { animationRepeatType: 'one'}
-const settingsReducers = (state = { Notification: notification, Animation: animation, loading: false, error: false }, action) => { 
+const settingsReducer = (state = { Notification: notification, Animation: animation, loading: false, error: false }, action) => { 
     switch (action.type) {
         case "INITIALIZE SETTINGS":
             return { ...state, Notification: notification, Animation: animation }
@@ -15,8 +15,8 @@ const settingsReducers = (state = { Notification: notification, Animation: anima
         case "UPDATE_ANIMATION_FAILED":
             return { ...state, Animation: action.data, loading: false, error: true }
         default:
-            // console.log(state)
+            //console.log(state)
             return state
     }
 }
-export default settingsReducers;
+export default settingsReducer;
