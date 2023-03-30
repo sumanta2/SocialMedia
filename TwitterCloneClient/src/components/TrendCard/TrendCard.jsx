@@ -3,7 +3,7 @@ import "./TrendCard.css"
 import {getAllHashTag} from "../../Api/HashtagRequest"
 //import { TrendData } from '../../Data/TrendData'
 
-const TrendCard = () => {
+const TrendCard = ({setShowTrendingPost}) => {
   const [allHashTag, setAllHashTag] = useState([])
   const [loadingError, setLoadingError] = useState({loading:false,error:false})
   const formatter = new Intl.NumberFormat(undefined, { notation: "compact", })
@@ -22,6 +22,11 @@ const TrendCard = () => {
     }
     fetchHashtags()
   }, [])
+
+  const storeTrend = (trendText) => {
+    
+    setShowTrendingPost(trendText)
+  }
    
    
   return (
@@ -29,7 +34,7 @@ const TrendCard = () => {
       {loadingError.loading? "Loading...":loadingError.error?"Failed to Fetch data...":<h3>Trends For You</h3>}
         {allHashTag.map((trend,id)=>{
           return (
-            <div className="trend" key={id}>
+            <div className="trend" key={id} onClick={()=> storeTrend(trend._id)}>
               <span>#{trend._id}</span>
               <span>#{formatter.format(trend.count)} shares</span>
             </div>

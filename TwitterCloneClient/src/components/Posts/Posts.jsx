@@ -6,7 +6,7 @@ import { getTimelinePosts } from '../../Actions/postAction'
 import { useParams } from "react-router-dom";
 import animationNoPost from "../../img/animation/629-empty-box.json"
 import LottieRenderer from "../LottieRenderer/LottieRenderer"
-const Posts = ({profileSide}) => {
+const Posts = () => {
   const dispatch=useDispatch()
   const params = useParams()
   const { user } = useSelector((state) => state.authReducer.authData)

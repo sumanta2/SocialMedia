@@ -42,7 +42,7 @@ const CommentComp = ({ comment,userId,deleteComment }) => {
     <div key={comment._id} className='outerDiv'>
       <div className='innerDiv'>
         <div className='innerDiv1'>
-          <img className="profileImg" src={serverPublic + comment.user.profilePicture} alt="Img" />
+          <img className="profileImg" src={comment.user.profilePicture? serverPublic+comment.user.profilePicture:serverPublic+"defaultProfile.png"} alt="Img" />
           <span className='userName'>{comment.user.firstname} {comment.user.lastname}</span>
         </div>
         <div className='innerDiv2'>
