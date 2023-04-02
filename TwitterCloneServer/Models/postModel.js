@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 const postSchema= mongoose.Schema({
-    userId:{type:String,required:true},
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     desc:String,
     likes:[],
     image:String,
