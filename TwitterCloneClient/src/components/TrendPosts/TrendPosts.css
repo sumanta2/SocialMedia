@@ -1,0 +1,29 @@
+.TrendPosts{
+    display: flex;
+    flex-direction: column;
+    gap:1rem;
+}
+.backWrapper{
+    display:flex;
+    gap:3rem;
+}
+.backBtn{
+    cursor:pointer;
+    width: 33px;
+    border-radius: 16px;
+}
+.backBtn:hover{
+    background:var(--backgroundHoverColor);
+}
+
+.backBtn>svg{
+    display:block;
+    height:34px;
+    width:34px;
+}
+.hashTag{
+    margin: auto 0px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--orange);
+}

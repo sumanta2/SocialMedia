@@ -145,6 +145,48 @@ export const getTimelinePosts = async (req, res) => {
             }
             
         ])
+//    is code username fetch karna ke lik=ya main likha tha but kam nahi kar raha hain
+        
+        // const followingPosts1 = await UserModel.aggregate([
+        //     {
+        //       $match: {
+        //         _id: new mongoose.Types.ObjectId(userId)
+        //       }
+        //     },
+        //     {
+        //       $lookup: {
+        //         from: "posts",
+        //         let: { followingList: "$following" },
+        //         pipeline: [
+        //           {
+        //             $match: {
+        //               $expr: {
+        //                 $in: ["$userId", "$$followingList"]
+        //               }
+        //             }
+        //           },
+        //           {
+        //             $lookup: {
+        //               from: "users",
+        //               localField: "userId",
+        //               foreignField: "_id",
+        //               as: "user"
+        //             }
+        //             }
+        //         ],
+        //         as: "followingPosts"
+        //       }
+        //     },
+        //     {
+        //       $project: {
+        //             followingPosts: 1,
+        //             user: 1,
+        //       }
+        //     }
+        //   ]);
+        // console.log(followingPosts1[0].followingPosts);
+
+          
         res.status(200).json(currentUserPosts.concat(...followingPosts[0].followingPosts).sort((a,b)=>{ return b.createdAt-a.createdAt}))
     } 
     catch (error) {

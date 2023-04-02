@@ -16,7 +16,7 @@ const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBl
   const [userData, setUserData] = useState(null);
   const [messages, setMessages] = useState([])
   const [newMessage, setNewMessage] = useState("");
-  const { notificationDuration } = useSelector((state) => state.settingsReducer.Notification)
+  const { notificationDuration,notificationOn } = useSelector((state) => state.settingsReducer.Notification)
   const { animationRepeatType } = useSelector((state) => state.settingsReducer.Animation)  
   // const [reachMessage,setReachMessage]=useState(false)
   const scroll= useRef()
@@ -98,7 +98,7 @@ const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBl
     socketRef.current?.on("delete-message-id", (id) => {
       const value = messages.filter((message) => message._id !== id)
       setMessages(value)
-      toast.success('One Message deleted By user', { duration: parseInt(notificationDuration) });
+      { notificationOn && toast.success('One Message deleted By user', { duration: parseInt(notificationDuration) }); }
     })
     return () => {
         socketRef.current?.off("delete-message-id")
@@ -121,7 +121,7 @@ const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBl
   const copyToClipboard = async (data) => {
     try {
       await navigator.clipboard.writeText(data);
-      toast.success('Text Copied', { duration: parseInt(notificationDuration) });
+      { notificationOn && toast.success('Text Copied', { duration: parseInt(notificationDuration) }); }
     }
     catch (error) {
       console.error("Failed to copy text: ", error);
