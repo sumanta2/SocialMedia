@@ -1,7 +1,6 @@
 import HashTagModel from "../Models/hashtagModel.js"  //if here does not provide .js as extension it generate error 
 import PostModel from "../Models/postModel.js";
-import bcrypt, { hash } from "bcrypt"
-import jwt from "jsonwebtoken";
+import mongoose from "mongoose"
 
 // process the hashtag 
 export const fetchFromPost = (message) => {
@@ -28,10 +27,40 @@ export const getPostsByHashTag = async (req, res) => {
     const {hashtag} = req.params
     try {
         const postIdList = await HashTagModel.find({hashtag}).distinct("postId")
-        const posts = await PostModel.find({_id : { $in: postIdList}})
+        const postIDListObj = postIdList.map(id => new mongoose.Types.ObjectId(id))
+        const posts = await PostModel.aggregate([
+            {
+                $match : {_id : { $in: postIDListObj}} 
+            },  
+            {
+               $lookup : {
+                    from: 'users',
+                    localField: 'userId',
+                    foreignField: '_id',
+                    as: 'userData'
+               }  
+            }, 
+            {
+                $project: {
+                    _id: 1,
+                    desc: 1,
+                    likes: 1,
+                    image: 1,
+                    createdAt: 1,
+                    updatedAt: 1,
+                    userData: {
+                        username: 1,
+                        firstname: 1,
+                        lastname: 1,
+                    }
+                }
+            }
+
+        ])
         posts.sort((a,b)=>{ return b.createdAt-a.createdAt})
         res.status(200).json(posts)
     } catch (error) {
+        console.log(error)
         res.status(500).json(error)
     }
 }
