@@ -72,7 +72,7 @@ const Post = ({ data, id }) => {
   }
 
   const copyToClipboard = async () => {
-    const link = process.env.REACT_APP_PUBLIC_FOLDER + data.image;
+    const link = process.env.REACT_APP_LOCALHOST_URL+"/home/"+data._id;
     try {
       await navigator.clipboard.writeText(link);
       { notificationOn && toast.success('Link Copied', { duration: parseInt(notificationDuration) }); }
@@ -83,7 +83,7 @@ const Post = ({ data, id }) => {
   }
 
   const shareToWhatsapp = () => {
-    const link = process.env.REACT_APP_PUBLIC_FOLDER + data.image;
+    const link = process.env.REACT_APP_LOCALHOST_URL+"/home/"+data._id;
     const encodedMessage = encodeURIComponent(link);
     window.open(`whatsapp://send?text=${encodedMessage}`);
   }
@@ -124,6 +124,7 @@ const Post = ({ data, id }) => {
   return (
     <div className="Post">
       <div className="detail">
+        <span className="postSender">Send by: {data.firstname} {data.lastname}</span> <br />
         <span><b>{data.name}</b></span>
         <span> {data.desc}</span>
       </div>
