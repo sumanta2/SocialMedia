@@ -17,11 +17,14 @@ import Liked from "../../img/Liked.png"
 import UnLiked from "../../img/unLiked.png"
 import { Menu, Modal } from '@mantine/core';
 import  CommentComp from '../CommentComp/CommentComp';
-import {createComment,getAllComments,deleteComment} from "../../Api/CommentRequest"
+import { createComment, getAllComments, deleteComment } from "../../Api/CommentRequest"
+import moment from 'moment';
+import { useParams, useNavigate } from "react-router-dom";
 
 
 
-const Post = ({ data, id }) => {
+
+const Post = ({ data, id,setShowTrendingPost=null }) => {
   const [preventRender, setPreventRender] = useState(true)
   const [opened, setOpened] = useState(false);
   const [comments, setComments] = useState([])
@@ -30,6 +33,10 @@ const Post = ({ data, id }) => {
   const posts = useSelector((state) => state.postReducer.posts)
   const { notificationDuration,notificationOn } = useSelector((state) => state.settingsReducer.Notification)
   const dispatch = useDispatch()
+  const navigate = useNavigate();
+
+
+  const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER
 
 
 
@@ -121,10 +128,21 @@ const Post = ({ data, id }) => {
     }
   }
 
+  const seeProfile = () => {
+    setShowTrendingPost && setShowTrendingPost(null)
+    navigate("../profile/"+data.userId)
+  }
+
   return (
     <div className="Post">
       <div className="detail">
-        <span className="postSender">Send by: {data.firstname} {data.lastname}</span> <br />
+        <div className='ownerDetails'>
+          <img className='profileImg' onClick={seeProfile} src={data?.profilePicture ? serverPublic + data.profilePicture : serverPublic + "defaultProfile.png"} alt="Img" style={{"cursor":"pointer"}} />
+          <div>
+            <span className="postSender">{data.firstname ?? user.firstname} {data.lastname ?? user.lastname}</span> <br />
+            <span className='sendTime'>{moment(data.createdAt).fromNow()}</span>
+          </div>
+        </div>
         <span><b>{data.name}</b></span>
         <span> {data.desc}</span>
       </div>

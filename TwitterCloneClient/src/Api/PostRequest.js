@@ -4,7 +4,9 @@ import { instance as API } from "./CommonRequests"
 
 // const API=axios.create({baseURL:process.env.REACT_APP_BASE_URL})
 
-export const getOnePosts= (id)=>API.get(`/post/${id}`)
+export const getOnePosts = (id) => API.get(`/post/${id}`)
+
+export const getSpecificUserPosts = (id) => API.get(`/post/all/${id}`)
 
 export const getTimelinePosts= (id)=>API.get(`/post/${id}/timeline`)
 

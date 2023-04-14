@@ -1,4 +1,4 @@
-import React, {useState,useRef} from 'react'
+import React, {useState,useRef,useEffect} from 'react'
 import "./PostShare.css"
 import { useMediaQuery } from '@mantine/hooks';
 import { UilScenery } from "@iconscout/react-unicons";
@@ -8,6 +8,7 @@ import { UilTimes } from "@iconscout/react-unicons"
 import { UilBars } from '@iconscout/react-unicons'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import { useParams } from "react-router-dom";
 import { uploadImage,uploadPost } from '../../Actions/uploadAction';
 import toast from 'react-hot-toast';
 
@@ -16,7 +17,9 @@ const PostShare = ({Opened,setOpened}) => {
     const loading = useSelector((state) => state.postReducer.uploading)
     const {notificationDuration,notificationOn}=useSelector((state) => state.settingsReducer.Notification)
     const [image,setImage]=useState(null)
-    const [acceptFileType, setAcceptFileType] = useState({image:"null",video:null})
+    const [acceptFileType, setAcceptFileType] = useState({ image: "null", video: null })
+    const [disabledShare, setDisabledShare] = useState(false)
+    const { id } = useParams();
     const [trackText, setTrackText] = useState("")
     const imageRef=useRef()
     const videoRef=useRef()
@@ -32,7 +35,19 @@ const PostShare = ({Opened,setOpened}) => {
     
     const dispatch=useDispatch()
     const serverPublic= process.env.REACT_APP_PUBLIC_FOLDER
-    const {user}=useSelector((state)=>state.authReducer.authData)
+    const { user } = useSelector((state) => state.authReducer.authData)
+    
+    useEffect(() => {
+        if (id && id !== user._id) {
+          setDisabledShare(true)
+        }
+        else {
+            setDisabledShare(false)
+        }
+
+    }, [id])
+    
+
     const onImageChange= (event)=>{
             const {name}=event.target
             if(event.target.files && event.target.files[0])
@@ -92,7 +107,7 @@ const PostShare = ({Opened,setOpened}) => {
         <div className="PostShare">
             <img src={user.profilePicture? serverPublic+user.profilePicture:serverPublic+"defaultProfile.png"} alt="" />
             <div>
-                <input type="text" ref={desc} required value={trackText} onChange={(e)=>setTrackText(e.target.value)} name="" id="" placeholder="What's Happening" />
+                <input type="text" disabled={disabledShare} ref={desc} required value={trackText} onChange={(e)=>setTrackText(e.target.value)} name="" id="" placeholder="What's Happening" />
 
                 <div className="postOptions">
                     {/* setOpened(false) */}
@@ -102,15 +117,15 @@ const PostShare = ({Opened,setOpened}) => {
                         </div>
                         
                     )}
-                    <div className="option" style={{color:"var(--photo)"}} onClick={()=>{imageRef.current.click()}}>
+                    <div className={`option ${disabledShare? "disabled":"" }`} style={{color:"var(--photo)"}}  onClick={()=>{imageRef.current.click()}}>
                         <UilScenery style={{transform: "rotate(12deg)"}} />
                         {matches1?"Photo":""}
                     </div>
-                    <div className="option" style={{color:"var(--video)"}} onClick={()=>{videoRef.current.click()}}>
+                    <div className={`option ${disabledShare? "disabled":"" }`} style={{color:"var(--video)"}} onClick={()=>{videoRef.current.click()}}>
                         <UilPlayCircle style={{transform: "rotate(10deg)"}} />
                         {matches1?"Video":""}
                     </div>
-                    <div className="option" style={{color:"var(--location)"}}>
+                    <div className={`option ${disabledShare? "disabled":"" }`} style={{color:"var(--location)"}}>
                         <UilLocationPoint  style={{transform: "rotate(342deg)"}}/>
                         {matches1?"Location":""}
                     </div>

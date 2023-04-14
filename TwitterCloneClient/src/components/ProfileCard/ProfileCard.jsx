@@ -1,13 +1,46 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import "./ProfileCard.css"
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { useParams } from "react-router-dom"
+import { getUser } from '../../Api/UserRequest.js'
+import { getSpecificUserPosts } from '../../Api/PostRequest'
+
+
 
 const ProfileCard = ({location}) => {  
 
   const {user}=useSelector((state)=>state.authReducer.authData)
 
-  const posts= useSelector((state)=> state.postReducer.posts)
+  const posts = useSelector((state) => state.postReducer.posts)
+  const params = useParams()
+  const profileUserId = params.id
+  const [profileUser, setProfileUser] = useState({})
+  const [userPosts, setUserPosts] = useState([])
+  
+
+  useEffect(() => {
+    const fetchProfileUser= async ()=>{
+      if(profileUserId === user._id || location === "homepage")
+      {
+        setProfileUser(user)
+        setUserPosts(posts)
+      }
+      else {
+        try {
+          const { data } = await getUser(profileUserId)
+          const { data: postData } = await getSpecificUserPosts(profileUserId)
+          setProfileUser(data)
+          setUserPosts(postData)
+        } catch (error) {
+          console.log(error)
+        }
+        
+      }
+    }
+  
+    fetchProfileUser()
+  }, [user,profileUserId])
   
   // const ProfilePage=false
   const serverPublic= process.env.REACT_APP_PUBLIC_FOLDER
@@ -15,23 +48,23 @@ const ProfileCard = ({location}) => {
   return (
     <div className='ProfileCard'>
       <div className="ProfileImages">
-        <img src={user.coverPicture? serverPublic+user.coverPicture:serverPublic+"defaultCover.jpg"} alt="" />
-        <img src={user.profilePicture? serverPublic+user.profilePicture:serverPublic+"defaultProfile.png"} alt="" />
+        <img src={profileUser.coverPicture? serverPublic+profileUser.coverPicture:serverPublic+"defaultCover.jpg"} alt="" />
+        <img src={profileUser.profilePicture? serverPublic+profileUser.profilePicture:serverPublic+"defaultProfile.png"} alt="" />
       </div>
       <div className="ProfileName">
-        <span>{user.firstname} {user.lastname}</span>
-        <span>{user.worksAt? user.worksAt: "Write about Yourself..."}</span>
+        <span>{profileUser.firstname} {profileUser.lastname}</span>
+        <span>{profileUser.worksAt? profileUser.worksAt: "Write about Yourself..."}</span>
       </div>
       <div className="followStatus">
         <hr />
         <div>
           <div className="follow">
-            <span>{user.following.length}</span>
+            <span>{profileUser.following?.length ?? "--"}</span>
             <span>Following</span>
           </div>
           <div className="vl"></div>
           <div className="follow">
-            <span>{user.followers.length}</span>
+            <span>{profileUser.followers?.length ?? "--"}</span>
             <span>Followers</span>
           </div>
           {
@@ -41,7 +74,7 @@ const ProfileCard = ({location}) => {
 
                   </div>
                   <div className="follow">
-                    <span>{posts.filter((post)=>post.userId === user._id).length}</span> 
+                    <span>{profileUserId === user._id? userPosts?.filter((post)=>post.userId === user._id).length :userPosts?.length}</span> 
                     <span>Posts</span>
                   </div>
 

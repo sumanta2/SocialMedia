@@ -11,7 +11,7 @@ const path = "./public/images/";
 //Create new Post
 
 export const createPost = async (req, res) => {
-  const hashtags = HashTagController.fetchFromPost(req.body.desc) //populates if there are any hastags in the post
+  const hashtags = HashTagController.fetchFromPost(req.body.desc) //populates if there are any hashtags in the post
   req.body.hashtags = hashtags
   const userId = req.body.userId;
   const newPost = new PostModel(req.body)
@@ -23,6 +23,46 @@ export const createPost = async (req, res) => {
     res.status(200).json(newPost)
   } catch (error) {
     print(error)
+    res.status(500).json(error)
+  }
+}
+
+//get all posts of specific users
+
+export const getAllPosts = async (req, res,) => {
+  const userId = req.params.userId
+  try {
+    const currentUserPosts = await PostModel.aggregate([
+      {
+        $match: { userId: new mongoose.Types.ObjectId(userId) }
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "userId",
+          foreignField: "_id",
+          as: "user"
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          desc: 1,
+          likes: 1,
+          image: 1,
+          userId: 1,
+          hashtags: 1,
+          createdAt: 1,
+          updatedAt: 1,
+          username: { $arrayElemAt: ["$user.username", 0] },
+          firstname: { $arrayElemAt: ["$user.firstname", 0] },
+          lastname: { $arrayElemAt: ["$user.lastname", 0] },
+          profilePicture: { $arrayElemAt: ["$user.profilePicture", 0] },
+        }
+      }
+    ])
+    res.status(200).json(currentUserPosts)
+  } catch (error) {
     res.status(500).json(error)
   }
 }
@@ -54,11 +94,13 @@ export const getPost = async (req, res) => {
           likes: 1,
           image: 1,
           hashtags: 1,
+          userId:1,
           createdAt: 1,
           updatedAt: 1,
           username: { $arrayElemAt: ["$user.username", 0] },
           firstname: { $arrayElemAt: ["$user.firstname", 0] },
           lastname: { $arrayElemAt: ["$user.lastname", 0] },
+          profilePicture:{ $arrayElemAt: ["$user.profilePicture", 0] },
 
         }
       }
@@ -164,12 +206,14 @@ export const getTimelinePosts = async (req, res) => {
           desc: 1,
           likes: 1,
           image: 1,
+          userId:1,
           hashtags: 1,
           createdAt: 1,
           updatedAt: 1,
           username: { $arrayElemAt: ["$user.username", 0] },
           firstname: { $arrayElemAt: ["$user.firstname", 0] },
           lastname: { $arrayElemAt: ["$user.lastname", 0] },
+          profilePicture:{ $arrayElemAt: ["$user.profilePicture", 0] },
 
         }
       }
@@ -221,11 +265,13 @@ export const getTimelinePosts = async (req, res) => {
                 desc: 1,
                 likes: 1,
                 hashtags: 1,
+                userId:1,
                 createdAt: 1,
                 updatedAt: 1,
                 username: { $arrayElemAt: ["$userDetails.username", 0] },
                 firstname: { $arrayElemAt: ["$userDetails.firstname", 0] },
                 lastname: { $arrayElemAt: ["$userDetails.lastname", 0] },
+                profilePicture:{ $arrayElemAt: ["$userDetails.profilePicture", 0] },
               }
             }
           ],
@@ -239,6 +285,7 @@ export const getTimelinePosts = async (req, res) => {
             username: "$username",
             firstname: "$firstname",
             lastname: "$lastname",
+            profilePicture: "$profilePicture",
           }
         }
       }

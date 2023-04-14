@@ -3,13 +3,18 @@ import { Formik, Form, Field,ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import "./Auth.css"
 import Logo from "../../img/logo.png"
-import { useDispatch,useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from "react-router-dom";
 import { logIn,signUp } from '../../Actions/AuthAction'
 
 
 const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false)
-  const dispatch=useDispatch()
+  const dispatch = useDispatch()
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const postId = searchParams.get("postId");
+  console.log(postId)
 
   const loading=useSelector((state)=>state.authReducer.loading)
 
@@ -18,10 +23,10 @@ const Auth = () => {
     
     if(isSignUp)
     {
-      if(values.password===values.confirmPass)dispatch(signUp(values))
+      if(values.password===values.confirmPass)dispatch(signUp(values,postId))
     }
     else{
-      dispatch(logIn(values))
+      dispatch(logIn(values,postId))
     }
     resetForm({})
   }

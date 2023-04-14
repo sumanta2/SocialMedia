@@ -38,7 +38,7 @@ const TrendPosts = ({ showTrendingPost, setShowTrendingPost }) => {
             {loadingError.loading ? "Loading..." :
                 loadingError.error ? "Failed to fetch Data" : trendingPosts.map((post, id) => {
                     return (
-                        <Post data={post} id={id} key={id} />
+                        <Post data={post} id={id} key={id} setShowTrendingPost={setShowTrendingPost} />
                     )
                 })}
         </div>

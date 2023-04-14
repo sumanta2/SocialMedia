@@ -14,6 +14,7 @@
   --location: #EF5757;
   --shedule: #E1AE4A;
   --backgroundHoverColor:#80808038;
+  --errorBackgroundColor:#FFF3F3;
 }
 .App{
   overflow:hidden;

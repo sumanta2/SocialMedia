@@ -46,11 +46,13 @@ export const getPostsByHashTag = async (req, res) => {
                     desc: 1,
                     likes: 1,
                     image: 1,
+                    userId: 1,
                     createdAt: 1,
                     updatedAt: 1,
                     username: { $arrayElemAt: ["$userData.username", 0] },
                     firstname: { $arrayElemAt: ["$userData.firstname", 0] },
                     lastname: { $arrayElemAt: ["$userData.lastname", 0] },
+                    profilePicture:{ $arrayElemAt: ["$userData.profilePicture", 0] },
                 }
             }
 

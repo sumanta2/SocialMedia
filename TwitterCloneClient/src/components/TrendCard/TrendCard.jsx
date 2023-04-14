@@ -32,7 +32,7 @@ const TrendCard = ({setShowTrendingPost}) => {
   return (
     <div className="TrendCard">
       {loadingError.loading? "Loading...":loadingError.error?"Failed to Fetch data...":<h3>Trends For You</h3>}
-        {allHashTag.map((trend,id)=>{
+      {allHashTag.map((trend, id) => {
           return (
             <div className="trend" key={id} onClick={()=> storeTrend(trend._id)}>
               <span>#{trend._id}</span>

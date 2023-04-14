@@ -14,21 +14,23 @@ const Profile = () => {
   const matches1 = useMediaQuery('(min-width: 962px)');
 
   const [CheckOpened, setCheckOpened] = useState(false)
+  const [showTrendingPost, setShowTrendingPost] = useState(null)
 
-
+  
 
 
   return (
     <div className="Profile">
-      {matches?<ProfileLeft/>:""}
+      {matches?<ProfileLeft setShowTrendingPost={setShowTrendingPost} />:""}
         
         
         <div className="Profile-center">
             <ProfileCard location="profilePage"/>
-            <PostSide Opened={CheckOpened} setOpened={setCheckOpened} />
+            <PostSide Opened={CheckOpened} showTrendingPost={showTrendingPost} setShowTrendingPost={setShowTrendingPost} setOpened={setCheckOpened} />
         </div>
         
-      {matches1?<RightSide/>:""}
+      {matches1 ? <RightSide setShowTrendingPost={setShowTrendingPost} /> : ""}
+      
       
       {/* <RightSide/> */}
       <Drawer
@@ -41,7 +43,7 @@ const Profile = () => {
           >
           <ScrollArea  className="Home" style={{height:"100%"}}>
             <ProfileLeft/>
-            <RightSide/>
+            <RightSide setShowTrendingPost={setShowTrendingPost} />
           </ScrollArea>
       </Drawer>
 

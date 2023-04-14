@@ -6,7 +6,7 @@ import "./App.css"
 //import Page404 from "./pages/Page404/Page404";
 //import Settings from "./pages/Settings/Settings";
 //import Notification from "./pages/Notification/Notification";
-import { Routes, Route, Navigate } from "react-router-dom"
+import { Routes, Route, Navigate,useParams,generatePath } from "react-router-dom"
 //import Chat from "./pages/Chat/Chat";
 import { useSelector } from "react-redux";
 import { Toaster } from 'react-hot-toast';
@@ -31,6 +31,12 @@ function App() {
   useEffect(() => {
     setNotificationDirection(notificationDirection)
   }, [notificationDirection])
+
+  const PostAuth = () => {
+    const { postId } = useParams();
+    const authUrl = generatePath("/auth?postId=:postId", { postId });
+    return <Navigate to={authUrl} />; 
+  }
   
 
   return (
@@ -42,7 +48,7 @@ function App() {
         <Routes>
           <Route path="/" element={user ? <Navigate to="home" /> : <Navigate to="auth" />} />
           <Route path="/home" element={user ? <Home /> : <Navigate to="../auth" />} />
-          <Route path="/home/:postId" element={user ? <Home /> : <Navigate to="../auth" />} />
+          <Route path="/home/:postId" element={user ? <Home /> : <PostAuth/> } />
           <Route path="/auth" element={user ? <Navigate to="../home" /> : <Auth />} />
           <Route path="/profile/:id" element={user ? <Profile /> : <Navigate to="../auth" />} />
           <Route path="/chat" element={user ? <Chat /> : <Navigate to="../auth" />} />

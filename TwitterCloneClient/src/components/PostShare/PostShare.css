@@ -24,6 +24,11 @@
     border:none;
     outline:none;
 }
+.disabled {
+    pointer-events: none;
+    opacity: 0.5; /* optional: to visually indicate the element is disabled */
+  }
+  
 .postOptions{
     display: flex;
     justify-content: space-around;

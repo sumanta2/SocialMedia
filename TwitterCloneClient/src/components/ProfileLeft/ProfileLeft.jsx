@@ -9,7 +9,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from '../Fallbacks/ErrorFallBack';
 const FollowersCard = lazy(() => import('../FollowersCard/FollowersCard'))
 
-const ProfileLeft = () => {
+const ProfileLeft = ({setShowTrendingPost}) => {
   let location=useLocation();
   let dataval=location?.pathname.search("/profile");
   const matches = useMediaQuery('(min-width: 723px)');
@@ -25,7 +25,7 @@ const ProfileLeft = () => {
         </Suspense>
       </ErrorBoundary>
          {
-          dataval!== -1 ? matches1 ? matches?<RightSide/> :"":"":""
+          dataval!== -1 ? matches1 ? matches?<RightSide setShowTrendingPost={setShowTrendingPost} /> :"":"":""
         }
     </div>
   )
