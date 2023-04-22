@@ -2,11 +2,24 @@ import React,{useEffect,useState} from 'react'
 import "./TrendCard.css"
 import {getAllHashTag} from "../../Api/HashtagRequest"
 //import { TrendData } from '../../Data/TrendData'
+import { LoadingAnimation, ErrorAnimation } from '../LoadingErrorAnimation/LoadingErrorAnimation'
+
+
 
 const TrendCard = ({setShowTrendingPost}) => {
   const [allHashTag, setAllHashTag] = useState([])
   const [loadingError, setLoadingError] = useState({loading:false,error:false})
   const formatter = new Intl.NumberFormat(undefined, { notation: "compact", })
+
+  //it used to test network request failure state
+  // const tester = () => {
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       reject('Failed');
+  //     }, 2000);
+  //   });
+  // };
+
 
   useEffect(async () => {
     const fetchHashtags = async () => {
@@ -31,7 +44,7 @@ const TrendCard = ({setShowTrendingPost}) => {
    
   return (
     <div className="TrendCard">
-      {loadingError.loading? "Loading...":loadingError.error?"Failed to Fetch data...":<h3>Trends For You</h3>}
+      {loadingError.loading ? <LoadingAnimation height={100} width={100} />: loadingError.error ? <ErrorAnimation height={100} width={100}  />: <h3>Trends For You</h3>}
       {allHashTag.map((trend, id) => {
           return (
             <div className="trend" key={id} onClick={()=> storeTrend(trend._id)}>

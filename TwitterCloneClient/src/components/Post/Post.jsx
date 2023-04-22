@@ -24,7 +24,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 
 
-const Post = ({ data, id,setShowTrendingPost=null }) => {
+const Post = ({ data, id,setShowTrendingPost=null,deleteTrendingPost=null  }) => {
   const [preventRender, setPreventRender] = useState(true)
   const [opened, setOpened] = useState(false);
   const [comments, setComments] = useState([])
@@ -54,7 +54,13 @@ const Post = ({ data, id,setShowTrendingPost=null }) => {
 
   const handleDelete = (e) => {
     { notificationOn && toast.success('Deleted', { duration: parseInt(notificationDuration) }); }
-    dispatch(deletePost(data._id, user._id))
+    if(deleteTrendingPost){
+      deleteTrendingPost(data._id, user._id)
+    }
+    else {
+      dispatch(deletePost(data._id, user._id))
+    }
+    
   }
 
   useEffect(() => {

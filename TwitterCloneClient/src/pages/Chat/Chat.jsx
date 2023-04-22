@@ -179,6 +179,12 @@ const Chat = () => {
 
   return (
     <div className='Chat'>
+      {/* <div className="Navbar">
+        <LogoSearch />
+        <div className="rightIcons">
+          <NavIcons />
+        </div>
+      </div> */}
       {/* Left Side */}
       <div className="Left-side-chat">
         <LogoSearch/>

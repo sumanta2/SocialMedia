@@ -13,6 +13,8 @@
 .directionContainer{
     display: flex;
     gap: 1rem;
+    justify-content: space-between;
+    width: 39vw;
 }
 #direction{
     margin:6px 0px;
@@ -34,3 +36,34 @@
 .setting-button:active{
     box-shadow: 0px 0px 0px 0px #00000052;
 }
+
+
+@media only screen and (max-width: 1070px) {
+    .directionContainer{
+        width: 52vw;
+    }
+  }
+  @media only screen and (max-width: 808px) {
+    .directionContainer{
+        width: 66vw;
+    }
+  }
+  @media only screen and (max-width: 710px) {
+    .directionContainer{
+        flex-direction: column;
+        justify-content: center;
+        width: 60vw;
+    }
+    
+  }
+  @media only screen and (max-width: 595px) {
+    .directionContainer{
+        width: 50vw;
+    }
+    .labels {
+        gap: 1rem;
+        padding: 5px 0px;
+        font-size: 14px;
+    }
+    
+  }

@@ -11,6 +11,8 @@ import { useDispatch } from 'react-redux';
 import { useParams } from "react-router-dom";
 import { uploadImage,uploadPost } from '../../Actions/uploadAction';
 import toast from 'react-hot-toast';
+import {  useNavigate } from "react-router-dom";
+
 
 
 const PostShare = ({Opened,setOpened}) => {
@@ -26,6 +28,7 @@ const PostShare = ({Opened,setOpened}) => {
     const desc=useRef()
     const matches = useMediaQuery('(min-width: 723px)');
     const matches1 = useMediaQuery('(min-width: 487px)');
+  const navigate = useNavigate();
 
     const img=process.env.REACT_APP_IMAGE_EXTENSION.split("-")
     const video=process.env.REACT_APP_VIDEO_EXTENSION.split("-")
@@ -103,9 +106,14 @@ const PostShare = ({Opened,setOpened}) => {
         reset()
         { notificationOn && toast.success('Posted', { duration: parseInt(notificationDuration), }); }
     }
+
+    const seeProfile = () => {
+        //setShowTrendingPost && setShowTrendingPost(null)
+        navigate("../profile/"+user._id)
+      }
     return (
-        <div className="PostShare">
-            <img src={user.profilePicture? serverPublic+user.profilePicture:serverPublic+"defaultProfile.png"} alt="" />
+        <div className="PostShare" >
+            <img src={user.profilePicture? serverPublic+user.profilePicture:serverPublic+"defaultProfile.png"} onClick={seeProfile} alt="" />
             <div>
                 <input type="text" disabled={disabledShare} ref={desc} required value={trackText} onChange={(e)=>setTrackText(e.target.value)} name="" id="" placeholder="What's Happening" />
 

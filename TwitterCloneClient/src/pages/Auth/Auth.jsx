@@ -14,7 +14,6 @@ const Auth = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const postId = searchParams.get("postId");
-  console.log(postId)
 
   const loading=useSelector((state)=>state.authReducer.loading)
 

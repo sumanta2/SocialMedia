@@ -1,13 +1,14 @@
 import React,{useState,useEffect} from 'react'
 import "./InfoCard.css"
-import { UilPen,UilClipboardNotes,UilShare,UilWhatsapp } from "@iconscout/react-unicons"
+import { UilPen, UilClipboardNotes, UilShare, UilWhatsapp } from "@iconscout/react-unicons"
+import toast from 'react-hot-toast'
 import ProfileModal from '../ProfileModal/ProfileModal'
 import { useDispatch,useSelector } from 'react-redux'
 import {useParams } from "react-router-dom"
 import * as UserApi from '../../Api/UserRequest.js'
 import { logOut } from '../../Actions/AuthAction'
 import { Menu } from '@mantine/core';
-import Share from "../../img/share.png"
+// import Share from "../../img/share.png"
 
 
 
@@ -23,13 +24,14 @@ const InfoCard = () => {
 
     
     useEffect(() => {
-      const fetchProfileUser= async ()=>{
+      const fetchProfileUser = async () => {
         if(profileUserId === user._id)
         {
             setProfileUser(user)
         }
         else {
-            try {
+          try {
+            
                 const {data}= await UserApi.getUser(profileUserId)
                 setProfileUser(data)
             } catch (error) {
@@ -41,6 +43,7 @@ const InfoCard = () => {
         }
         
       fetchProfileUser()
+      
     }, [user,profileUserId])
 
     const handleLogOut= ()=>{

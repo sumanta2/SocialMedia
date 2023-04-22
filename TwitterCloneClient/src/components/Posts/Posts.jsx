@@ -9,6 +9,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import animationNoPost from "../../img/animation/629-empty-box.json"
 import LottieRenderer from "../LottieRenderer/LottieRenderer"
 import { UilArrowLeft } from '@iconscout/react-unicons'
+import { LoadingAnimation, ErrorAnimation } from '../LoadingErrorAnimation/LoadingErrorAnimation'
+
 
 const Posts = () => {
   const dispatch = useDispatch()
@@ -25,6 +27,8 @@ const Posts = () => {
   const [loadingError, setLoadingError] = useState({loading:false,error:false})
   const navigate = useNavigate();
 
+
+  //when user give specific post link in url based on the portId present in URL fetch this post
   const fetchData = async () => {
     try {
       const { data } = await getOnePosts(getPostId)
@@ -63,6 +67,7 @@ useEffect(() => {
     setGetPostId(globalPostId)
   }
 }, [globalPostId]);
+  
 useEffect(() => {
   if (!getPostId) {
     dispatch(getTimelinePosts(user._id))
@@ -75,11 +80,11 @@ useEffect(() => {
 
 }, [dispatch, user._id, getPostId])
   
- 
+ // in profile section when an user paste another user profile link at that time if if users link users is not login user 
   if (id && user._id !== id) {
     
-    if (loadingError.loading) return "Fetching Posts....."
-    if (loadingError.error) return "Failed to fetch posts"
+    if (loadingError.loading) return <LoadingAnimation height={100} width={100} />
+    if (loadingError.error) return <ErrorAnimation height={100} width={100}  />
     
     if( userPosts?.length === 0) return <div style={{ margin: "0px auto" }}><LottieRenderer animationData={animationNoPost} height={300} width={300} loop={animationRepeatType === 'loop' ? true : false} autoplay={animationRepeatType === 'one' || animationRepeatType === 'loop' ? true : false} /></div>
   return (
@@ -132,9 +137,9 @@ if (params.id && params.id === user._id) {
             <UilArrowLeft />
           </div>
           <Post data={putOnePosts} id={1} />
-        </div>) : "Loading..."
+        </div>) : <LoadingAnimation height={100} width={100} />
 
-        : loading ? "Fetching Posts..." :
+        : loading ? <LoadingAnimation height={100} width={100} /> :
           posts.map((post, id) => {
             return (
               <Post data={post} id={id} key={id} />

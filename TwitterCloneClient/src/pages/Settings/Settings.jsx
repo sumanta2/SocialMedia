@@ -26,7 +26,7 @@ const Settings = () => {
             </div>
             <div className="Settings">
                 <div className="Left-side-setting">
-                    <h2>Settings</h2>
+                    <h2 className="settingText">Settings</h2>
                     <div className="Setting-list">
                         <div>
                             <span className="setting-text" onClick={() => setTrackSetting(1)}>Notification</span>

@@ -5,7 +5,8 @@
     position: relative;
     gap:1rem;
      overflow-x:clip;   /* without this property border-radius property does not work */
-     background:var(--cardColor)
+     background:var(--cardColor);
+     min-width:18rem;
 }
 .ProfileImages{
     position:relative;

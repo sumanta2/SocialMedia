@@ -1,4 +1,11 @@
 
+
+.Navbar{
+  display: flex;
+  justify-content: space-between;
+  position:relative;
+  z-index:3;
+}
 .Chat {
   position: relative;
   display: grid;
