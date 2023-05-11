@@ -3,6 +3,7 @@ import { Formik, Form, Field,ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import "./Auth.css"
 import Logo from "../../img/logo.png"
+import Logo1 from "../../img/logo2.png"
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from "react-router-dom";
 import { logIn,signUp } from '../../Actions/AuthAction'
@@ -51,8 +52,8 @@ const Auth = () => {
       <div className="a-left">
         <img src={Logo} alt="" />
         <div className='"WebName'>
-          <h1 className="Transparent">Twitter Clone</h1>
-          <h6>Explore the ideas through the World</h6>
+          <h1 className="Transparent">SocialConnect</h1>
+          <h6>Explore the ideas through the Social World</h6>
         </div>
       </div>
       {/* Right Side */}

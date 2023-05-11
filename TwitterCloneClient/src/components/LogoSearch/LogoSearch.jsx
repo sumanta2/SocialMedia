@@ -1,5 +1,6 @@
 import React from 'react'
 import Logo from '../../img/logo.png'
+import Logo1 from "../../img/logo2.png"
 import {UilSearch} from '@iconscout/react-unicons'
 import "./LogoSearch.css"
 
@@ -12,7 +13,7 @@ const LogoSearch = () => {
             <div className="s-icon">
                 <UilSearch/>
             </div> */}
-        <span className='appName'>Twitter</span>
+        <span className='appName'>SocialConnect</span>
         </div>
     </div>
   )

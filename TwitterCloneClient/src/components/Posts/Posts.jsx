@@ -97,7 +97,8 @@ useEffect(() => {
 }
   
   
-
+if (loading) return <LoadingAnimation height={100} width={100} />
+  
 if (posts.length === 0) return <div style={{ margin: "0px auto" }}><LottieRenderer animationData={animationNoPost} height={300} width={300} loop={animationRepeatType === 'loop' ? true : false} autoplay={animationRepeatType === 'one' || animationRepeatType === 'loop' ? true : false} /></div>;
 if (params.id && params.id === user._id) {
   posts = posts.filter((post) => post.userId === params.id)
@@ -139,8 +140,7 @@ if (params.id && params.id === user._id) {
           <Post data={putOnePosts} id={1} />
         </div>) : <LoadingAnimation height={100} width={100} />
 
-        : loading ? <LoadingAnimation height={100} width={100} /> :
-          posts.map((post, id) => {
+        : posts.map((post, id) => {
             return (
               <Post data={post} id={id} key={id} />
             )
