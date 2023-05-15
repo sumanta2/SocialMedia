@@ -133,11 +133,11 @@ const PostShare = ({Opened,setOpened}) => {
                         <UilPlayCircle style={{transform: "rotate(10deg)"}} />
                         {matches1?"Video":""}
                     </div>
-                    <div className={`option ${disabledShare? "disabled":"" }`} style={{color:"var(--location)"}}>
+                    {/*<div className={`option ${disabledShare? "disabled":"" }`} style={{color:"var(--location)"}}>
                         <UilLocationPoint  style={{transform: "rotate(342deg)"}}/>
                         {matches1?"Location":""}
                     </div>
-                    {/* <div className="option" style={{color:"var(--shedule)"}}>
+                     <div className="option" style={{color:"var(--shedule)"}}>
                         <UilSchedule style={{transform: "rotate(15deg)"}}/>
                         {matches1?"Schedule":""}
                     </div> */}

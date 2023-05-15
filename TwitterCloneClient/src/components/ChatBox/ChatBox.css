@@ -1,0 +1,23 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Neucha&display=swap');
+
+
+.chatbox-empty-message{
+    font-family: 'Neucha', cursive;
+}
+.name{
+    font-family: 'Neucha', cursive;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+.no-message{
+    text-align: center;
+    font-family: 'Neucha', cursive;
+    font-size:20px;
+    letter-spacing: 1px;
+    color:var(--location);
+}
+.message-text{
+    font-family: 'Neucha', cursive;
+    letter-spacing: 1px;
+}

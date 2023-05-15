@@ -11,6 +11,7 @@ import { UilClipboardNotes } from '@iconscout/react-unicons'
 import LottieRenderer from "../LottieRenderer/LottieRenderer";
 import NoInternetAnimation from "../../img/animation/99311-no-internet.json"
 // import { UilCheck } from '@iconscout/react-unicons'
+import "./ChatBox.css"
 
 const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBlur,typing,online,socketRef,recipient,CheckInternet}) => {
   const [userData, setUserData] = useState(null);
@@ -149,7 +150,7 @@ const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBl
                     className="followerImage"
                     style={{ width: "50px", heigh: "50px" }}
                   />
-                  <div className="name" style={{ fontSize: "0.8rem" }}>
+                  <div className="name" >
                     <span>
                       {userData?.firstname} {userData?.lastname}
                       </span>
@@ -164,13 +165,14 @@ const ChatBox = ({ chat, currentUser ,setSendMessage,receiveMessage,onFocus,onBl
 
             {/* Chat Box Messages */}
             <div className="chat-body">
-              {
+                {
+                  messages.length===0?<span className="no-message">No Message Found</span>:
                   messages.map((message, no) => (
                     
                     <Menu key={no} ref={scroll} control={
                       // <div className="">
                       <div className={message.senderId === currentUser ? " message own" : "message"}>
-                        <span>{message.text}</span>
+                        <span className="message-text">{message.text}</span>
                         <div style={{ display: "flex" }}><span>{moment(message.createdAt).fromNow()}</span></div>
                       </div>
                     } style={message.senderId === currentUser ? { alignSelf: "flex-end" } : {}}>

@@ -30,10 +30,10 @@ const NavIcons = () => {
         {location.pathname==="/settings" ?<div style={{paddingTop:"4px"}}> <LottieRenderer  animationData={SettingAnimation} height={30} width={30} loop={false} autoplay={true}/></div>: <img src={SettingImage} alt="" style={{height:"26px",width:"26px",paddingTop:"6px"}} /> }
         </Link>
 
-        <Link to="../notification" style={{transform:"translate(0px, -4px)"}}>
+        {/* <Link to="../notification" style={{transform:"translate(0px, -4px)"}}>
         {location.pathname === "/notification" ?<LottieRenderer animationData={NotificationAnimation} height={40} width={45} loop={false} autoplay={true} />
           :<img src={NotificationImage} alt="" style={{height:"29px",width:"24px",left:"-2px",paddingTop:"9px",position:"relative",margin:"0px 12px"}} /> }
-        </Link>
+        </Link> */}
 
         <Link to="../chat" className='chatClass'>
         {location.pathname === "/chat" ?<LottieRenderer animationData={ChatAnimation} height={34} width={75} loop={false} autoplay={true} />

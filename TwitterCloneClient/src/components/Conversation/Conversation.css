@@ -1,3 +1,9 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=Neucha&display=swap');
+
+
+
 .deleteChat{
     background-color: rgba(0,0,0,0.5);
     position: absolute;
@@ -7,4 +13,9 @@
     top:8px;
     left:6px;
     color:whitesmoke;
+}
+.userName{
+    font-family: 'Neucha', cursive;
+    font-size:16px;
+    letter-spacing: 1px;
 }

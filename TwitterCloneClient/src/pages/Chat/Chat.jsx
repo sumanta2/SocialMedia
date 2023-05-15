@@ -190,7 +190,7 @@ const Chat = () => {
         <LogoSearch/>
         <div className="Chat-container">
 
-          <h2>Chat</h2>
+          <h2 className='ChatText'>Chat</h2>
           {!CheckInternet ?
             <div className="noInternet">
               <UilCloudTimes className="offlineIcon" />

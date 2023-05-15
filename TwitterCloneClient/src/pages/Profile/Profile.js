@@ -6,7 +6,7 @@ import ProfileCard from '../../components/ProfileCard/ProfileCard'
 import ProfileLeft from '../../components/ProfileLeft/ProfileLeft'
 import RightSide from '../../components/RightSide/RightSide'
 import { useMediaQuery } from '@mantine/hooks';
-import "./Profile.css"
+import './Profile.css'
 
 
 const Profile = () => {

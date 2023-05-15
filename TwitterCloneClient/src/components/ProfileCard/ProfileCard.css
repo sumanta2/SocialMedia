@@ -35,6 +35,9 @@
 .ProfileName>span:nth-of-type(1){
     font-weight: bold; 
 }
+.ProfileName>span:nth-of-type(2){
+    color:var(--gray);
+}
 .followStatus{
     display: flex;
     flex-direction: column;

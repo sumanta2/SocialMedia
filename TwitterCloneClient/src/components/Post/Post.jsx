@@ -150,11 +150,11 @@ const Post = ({ data, id,setShowTrendingPost=null,deleteTrendingPost=null  }) =>
           </div>
         </div>
         <span><b>{data.name}</b></span>
-        <span> {data.desc}</span>
+        <span className='description'> {data.desc}</span>
       </div>
       {chkImg ? <img src={data?.image ? process.env.REACT_APP_PUBLIC_FOLDER + data.image : ""} alt="" />
         : chkVdo ?
-          <video controls style={{ "maxHeight": "400px" }}>
+          <video controls style={{ width: "100%", maxHeight: "400px" }}>
             <source src={data?.image ? process.env.REACT_APP_PUBLIC_FOLDER + data.image : ""} type="video/mp4" /> </video>
           : ""
       }

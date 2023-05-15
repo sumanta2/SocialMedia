@@ -1,4 +1,7 @@
 
+ @import url('https://fonts.googleapis.com/css2?family=Neucha&display=swap');
+
+
 .postSender{
     font-size: x-small;
     font-weight: 700;
@@ -33,6 +36,11 @@
     max-height: 20rem;     /* if provide 20 rem it does not fit in layout */
     object-fit: cover;
     border-radius: 0.5rem;
+}
+.description{
+    font-family: 'Neucha', cursive;
+    letter-spacing: 1px;
+    font-size: 17px;
 }
 .reactionContain{
     display: flex;

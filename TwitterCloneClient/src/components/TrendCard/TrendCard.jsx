@@ -44,7 +44,7 @@ const TrendCard = ({setShowTrendingPost}) => {
    
   return (
     <div className="TrendCard">
-      {loadingError.loading ? <LoadingAnimation height={100} width={100} />: loadingError.error ? <ErrorAnimation height={100} width={100}  />: <h3>Trends For You</h3>}
+      {loadingError.loading ? <LoadingAnimation height={100} width={100} />: loadingError.error ? <ErrorAnimation height={100} width={100}  />: <h3 className='heading'>Trends For You</h3>}
       {allHashTag.map((trend, id) => {
           return (
             <div className="trend" key={id} onClick={()=> storeTrend(trend._id)}>
